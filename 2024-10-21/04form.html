@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <fieldset>
+        <legend>HR form</legend>
+        <form action="./getData.php">
+    
+
+
+        <!-- input -->
+        <!-- input text -->
+        <!-- input number -->
+        <!-- input datetime -->
+        <!-- input radio -->
+        <!-- input checkbox -->
+        <!-- input submit -->
+
+        <!-- select -->
+        <!-- textarea -->
+
+
+        <!-- input -->
+        <!-- input text -->
+         <img src="./img/google.jpg" alt="" width="40px">
+        <p>
+            <label for="myName">Name:</label>
+            <input type="text" name="myName" id="myName" placeholder="請輸入名字" required minlength="3">
+        </p>
+
+        <!-- input number -->
+        <p>
+            <label for="myNumber">Phone Number:</label>
+            <input type="number" name="myNumber" id="myNumber" placeholder="請輸入電話號碼" required maxlength="10">
+        </p>
+        <!-- input date -->
+        <p>
+            <label for="myData">Date:</label>
+            <input type="date" name="myDate" id="myData" required>
+        </p>
+        <p> 
+            <label for="file">File:</label>
+            <input type="file" name="file" id="file" />        
+        </p>
+
+
+        <!-- input radio 單選 name 要一樣-->
+        <p>
+            單選
+        </p>
+        <p>
+            <input type="radio" name="myRadio" id="" value="html">
+            <label for="">html</label>
+            <input type="radio" name="myRadio" id="" value="css">
+            <label for="">css</label>
+            <input type="radio" name="myRadio" id="" value="javascript">
+            <label for="">javascript</label>
+        </p>
+        <!-- input checkbox 複選 name []-->
+        <p>
+            Checkbox 複選
+        </p>
+        <p>
+            <input type="checkbox" name="habit[]" id="" value="book">
+            <label for="">book</label>
+            <input type="checkbox" name="habit[]" id="" value="tv">
+            <label for="">tv</label>
+            <input type="checkbox" name="habit[]" id="" value="sleep">
+            <label for="">sleep</label>
+            <input type="checkbox" name="habit[]" id="" value="game">
+            <label for="">game</label>
+        </p>
+
+        <!-- select / (input text)-->
+         <p>
+            Select 下拉選單
+         </p>
+         <p>
+             <!-- <input type="text" name="mySelect" id="" value="goSelect"> -->
+             <select name="mySelect" id="">
+                <option value="amy">amy</option>
+                <option value="bob">bob</option>
+                <option value="cat">cat</option>
+                <option value="dog">dog</option>
+                <option value="elephant">elephant</option>
+             </select>
+
+
+         </p>
+        <!-- textarea -->
+        <p>
+           comment
+        </p>
+
+        <p>
+           <textarea name="mytextarea" id="" cols="50" rows="5"></textarea>
+        </p>
+
+
+
+        <!-- input submit-->
+        <input type="submit" value="submit">
+
+
+    </form>
+</fieldset>
+</body>
+
+</html>

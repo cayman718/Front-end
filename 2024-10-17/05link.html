@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 繼承瀏覽器的高度 */
+       html,
+       body{
+        height:100%;
+       }
+       body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       }
+       
+       /* 偽類 pseudo-class,是一個大家族 */
+
+       a{
+        color: red;
+        font-size: 100px;
+        /* 拿掉底線 */
+        text-decoration: none;
+       }
+       
+       /* :hover滑鼠移過去的狀態 */
+       a:hover{
+        color: blanchedalmond;
+        background-color: grey;
+        text-decoration: underline;
+        transition: .5s;
+       }
+
+       /* :visted拜訪過後的狀態 */
+       a:visited{
+        color: gray;
+       }
+
+       /* :active點下去的狀態 */
+       a:active{
+        color:bisque;
+       }
+
+       a:focus{
+        background-color: aliceblue;
+       } 
+    </style>
+</head>
+
+<body>
+    <a href="#">Google</a>
+</body>
+
+</html>

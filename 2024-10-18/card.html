@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card{
+            width: 250px;
+            border: 1px solid #000000;
+            padding: 10px;
+            margin:17px 8px ;
+            box-sizing: border-box;
+            position: relative;
+            border-radius: 20px;
+            box-shadow: 5px 5px 10px gray;
+        }
+        .card-ribbon{
+            position: absolute;
+            top: -18px;
+            left: -18px;
+        }
+        .card-img{
+            width: 100%;
+            transform: .5s;
+            cursor: pointer;
+        }
+        div p{
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: line-through;
+            color: red;
+        }
+        div p:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="./ribbon.png" class="card-ribbon">
+        <img src="./16pro.jpg" alt="" class="card-img">
+        <p style="text-decoration: none;">iPhone 16 Pro Max (256G)</p>
+        <p style="color: #969696;">$48899</p> 
+    </div>
+</body>
+</html>

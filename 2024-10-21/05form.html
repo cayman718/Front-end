@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR新人應徵表單</title>
+    <style>
+        body {
+            position: relative;
+            padding-top: 20px; /* 為圖片留出空間 */
+        }
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 250px;
+            width: 80px; /* 調整圖片大小 */
+        }
+        input[type='submit']{
+            cursor: pointer;
+            border-radius: 10px;
+            outline: none;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>HR新人應徵表單</h1>
+    <img src="./img/google.jpg" alt="" class="logo">
+
+    <form action="#" method="post">
+        <fieldset>
+            <legend>個人資料</legend>
+            <label for="name">姓名：</label>
+            <input type="text" id="name" name="name" required><br><br>
+            
+            <label for="email">電子郵件：</label>
+            <input type="email" id="email" name="email" required><br><br>
+            
+            <label for="phone">電話號碼：</label>
+            <input type="tel" id="phone" name="phone" required><br><br>
+            
+            <label for="birth">出生日期：</label>
+            <input type="date" id="birth" name="birth" required><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>學歷背景</legend>
+            <label for="education">最高學歷：</label>
+            <select id="education" name="education" required>
+                <option value="">請選擇</option>
+                <option value="高中">高中</option>
+                <option value="專科">專科</option>
+                <option value="學士">學士</option>
+                <option value="碩士">碩士</option>
+                <option value="博士">博士</option>
+            </select><br><br>
+            
+            <label for="major">主修科系：</label>
+            <input type="text" id="major" name="major" required><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>工作經驗</legend>
+            <label for="experience">工作年資：</label>
+            <input type="number" id="experience" name="experience" min="0" required><br><br>
+            
+            <label for="skills">專業技能：</label>
+            <textarea id="skills" name="skills" rows="5" cols="60" required></textarea><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>其他資訊</legend>
+            <label for="position">應徵職位：</label>
+            <input type="text" id="position" name="position" required><br><br>
+            
+            <label for="salary">期望薪資：</label>
+            <input type="text" id="salary" name="salary" required><br><br>
+            
+            <label for="start_date">可到職日期：</label>
+            <input type="date" id="start_date" name="start_date" required><br><br>
+        </fieldset>
+        <br>
+
+        <input type="submit" value="提交申請" >
+    </form>
+</body>
+</html>

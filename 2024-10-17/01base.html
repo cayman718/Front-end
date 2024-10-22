@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>css 基本設定</title>
+    <!-- 第二種方式使用link適用網站開發 -->
+    <!-- 第一種使用style標籤樣式 自己練習使用 -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        h1{
+            color:red;
+            background-color: yellow;
+        }
+        p{
+            font-size: 30px;
+        }
+        /* 群組選擇器 */
+        /* h1的顏色被覆蓋了,由紅色變藍色 */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6{
+            color:blue;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 第三種方式 行內樣式 優先使用 -->
+    <h1>title1</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur laboriosam corrupti dictaporronecessitatibus impedit fugiat perspiciatis soluta quos quam?</p>
+    <h1>title2</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur laboriosam corrupti dictaporronecessitatibus impedit fugiat perspiciatis soluta quos quam?</p>
+    <h1>title3</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur laboriosam corrupti dictaporronecessitatibus impedit fugiat perspiciatis soluta quos quam?</p>
+    <hr>
+    <h1>Hello World</h1>
+    <h2>Hello World</h2>
+    <h3>Hello World</h3>
+    <h4>Hello World</h4>
+    <h5>Hello World</h5>
+    <h6>Hello World</h6>
+</body>
+
+</html>
