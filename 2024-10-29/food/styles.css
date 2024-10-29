@@ -1,0 +1,169 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* 淺灰色背景 */
+    color: #333; /* 深色文字 */
+}
+
+.banner {
+    background-image: url('https://www.worldpop.com.tw/wp-content/uploads/2024/09/%E9%82%91%E5%B1%85%E9%85%92%E5%B1%8B_LOGO%E7%89%86-1080x675.jpg');
+    background-color: #2f2f2f; /* 深灰色背景 */
+    background-size: cover; /* 確保背景圖片覆蓋整個區域 */
+    background-position: center; /* 背景圖片居中 */
+    color: #ecf0f1; /* 淺色文字 */
+    text-align: center; /* 文字居中 */
+    padding: 80px 20px; /* 增加內邊距 */
+    position: relative; /* 設置相對定位 */
+}
+
+
+.banner h1 {
+    position: relative; /* 確保文字不受背景影響 */
+    z-index: 1; /* 提高文字層級 */
+}
+
+.navbar {
+    margin: 20px 0; /* 導覽條的上下間距 */
+    position: relative; /* 確保導航在背景之上 */
+    z-index: 1; /* 提高導航層級 */
+}
+
+.logo {
+    width: 150px; /* 調整 logo 寬度 */
+    height: auto; /* 自動調整高度以保持比例 */
+    display: block; /* 使 logo 成為區塊元素 */
+    margin: 0 auto 20px; /* 居中並添加下方間距 */
+}
+
+.navbar {
+    margin: 20px 0; /* 導覽條的上下間距 */
+}
+
+.navbar ul {
+    list-style-type: none; /* 移除預設的列表符號 */
+    padding: 0; /* 去掉內邊距 */
+    display: flex; /* 使用彈性盒子 */
+    justify-content: center; /* 居中對齊 */
+}
+
+.navbar li {
+    margin: 0 20px; /* 增加左右的間距 */
+}
+
+.navbar a {
+    color: #ecf0f1; /* 字體顏色 */
+    text-decoration: none; /* 移除下劃線 */
+    font-weight: bold; /* 字體加粗 */
+}
+
+.navbar a:hover {
+    text-decoration: underline; /* 懸停時添加下劃線 */
+}
+
+.container {
+    max-width: 800px; /* 最大寬度 */
+    margin: 20px auto; /* 居中 */
+    padding: 20px; /* 增加內邊距 */
+    background-color: #ffffff; /* 白色背景 */
+    border-radius: 10px; /* 圓角邊框 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+}
+
+.floor-image {
+    width: 100%; /* 讓容器填滿可用空間 */
+    height: 400px; /* 設定合適的高度 */
+    overflow: hidden; /* 隱藏超出容器的部分 */
+    border-radius: 10px; /* 圓角邊框 */
+}
+
+.floor-image img {
+    width: 100%; /* 使圖片寬度填滿容器 */
+    height: 100%; /* 使圖片高度填滿容器 */
+    object-fit: cover; /* 保持圖片比例並填滿容器 */
+    object-position: center; /* 圖片居中 */
+}
+
+
+
+
+.restaurant-info {
+    text-align: center; /* 文字居中 */
+}
+
+h2 {
+    color: #34495e; /* 深灰藍色 */
+}
+
+p {
+    font-size: 16px; /* 字體大小 */
+    line-height: 1.5; /* 行間距 */
+    color: #555; /* 段落顏色 */
+}
+
+.reservation-form {
+    margin-top: 20px; /* 表格上方間距 */
+    padding: 20px; /* 表格內邊距 */
+    background-color: #f9f9f9; /* 淺色背景 */
+    border-radius: 10px; /* 圓角邊框 */
+}
+
+label {
+    display: block; /* 块级元素 */
+    margin: 10px 0 5px; /* 上方、下方間距 */
+}
+
+input {
+    width: 100%; /* 輸入框寬度 */
+    padding: 10px; /* 內邊距 */
+    border: 1px solid #ccc; /* 邊框顏色 */
+    border-radius: 5px; /* 圓角邊框 */
+}
+
+button {
+    background-color: #2c3e50; /* 按鈕背景顏色 */
+    color: white; /* 按鈕文字顏色 */
+    border: none; /* 移除邊框 */
+    padding: 10px 15px; /* 按鈕內邊距 */
+    border-radius: 5px; /* 圓角邊框 */
+    cursor: pointer; /* 鼠標指針樣式 */
+    margin-top: 10px; /* 按鈕上方間距 */
+}
+
+button:hover {
+    background-color: #34495e; /* 懸停時的顏色 */
+}
+
+.footer {
+    background-color: #333; /* 深灰色背景 */
+    color: #dcdcdc; /* 淺灰色文字 */
+    text-align: center; /* 文字居中 */
+    padding: 25px 20px; /* 增加內邊距 */
+    border-top: 5px solid #7f8c8d; /* 工業風格的灰色邊框 */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* 增加陰影效果 */
+}
+
+.footer-content {
+    max-width: 800px; /* 設定最大寬度 */
+    margin: 0 auto; /* 自動居中 */
+}
+
+.footer p {
+    margin: 10px 0; /* 上下間距 */
+}
+
+.footer a {
+    color: #f39c12; /* 明亮橙色超連結 */
+    text-decoration: none; /* 去掉下劃線 */
+    margin: 0 15px; /* 超連結間距 */
+    transition: color 0.3s, transform 0.3s; /* 漸變效果 */
+}
+
+.footer a:hover {
+    color: #ffffff; /* 鼠標懸停時變為白色 */
+    transform: scale(1.1); /* 鼠標懸停時放大 */
+}
+
+.social-media {
+    margin-top: 15px; /* 與其他內容的間距 */
+}

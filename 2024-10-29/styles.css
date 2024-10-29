@@ -1,0 +1,122 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* 淺色背景，讓眼睛更舒服 */
+    margin: 0;
+    padding: 40px; /* 增加上下的內邊距 */
+}
+
+.container {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 更柔和的陰影 */
+    padding: 30px; /* 增加內邊距 */
+    max-width: 800px; /* 增加最大寬度 */
+    margin: auto;
+    text-align: center;
+}
+
+/* 淡入效果 */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards; /* 定義動畫 */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* 滑動效果 */
+.slide-in {
+    transform: translateX(-50px); /* 初始位置偏左 */
+    opacity: 0; /* 初始透明度 */
+    animation: slideIn 0.5s forwards; /* 定義動畫 */
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0); /* 最終位置 */
+        opacity: 1; /* 最終透明度 */
+    }
+}
+
+/* 懸停效果 */
+.album-cover:hover {
+    transform: scale(1.05); /* 懸停時放大 */
+    transition: transform 0.3s ease; /* 平滑過渡效果 */
+    cursor: pointer;
+}
+
+.feedback-item:hover {
+    background-color: #d0e7ff; /* 懸停時改變背景顏色 */
+    transition: background-color 0.3s ease; /* 平滑過渡效果 */
+}
+
+h1 {
+    font-size: 36px; /* 增加標題字體大小 */
+    margin-bottom: 15px;
+    color: #333; /* 深色字體，增強可讀性 */
+}
+
+h2 {
+    font-size: 28px; /* 增加副標題字體大小 */
+    margin-bottom: 20px;
+    color: #555; /* 稍淺的顏色 */
+}
+
+.album-cover {
+    width: 100%;
+    max-width: 400px; /* 設置最大寬度 */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #e1e1e1; /* 增加邊框 */
+}
+
+h3 {
+    font-size: 24px; /* 增加小標題字體大小 */
+    margin: 20px 0 10px;
+    color: #333;
+}
+
+p {
+    font-size: 18px; /* 增加介紹段落字體大小 */
+    margin-bottom: 20px;
+    line-height: 1.6; /* 增加行間距 */
+}
+
+ul.feedback-list {
+    padding: 0;
+    margin: 0;
+}
+
+.feedback-item {
+    background-color: #e7f3fe; /* 淺藍色背景 */
+    border-left: 5px solid #2196F3; /* 左側顯眼的藍色邊框 */
+    border-radius: 5px;
+    padding: 15px; /* 增加內邊距 */
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333; /* 深色字體 */
+    position: relative; /* 使內容相對於其容器 */
+}
+
+.feedback-item::before {
+    content: "💬"; /* 添加一個引號符號 */
+    position: absolute; /* 絕對定位 */
+    left: 10px; /* 向左偏移 */
+    top: 50%; /* 垂直居中 */
+    transform: translateY(-50%); /* 垂直居中調整 */
+}
+
+pre {
+    text-align: left; /* 讓歌詞左對齊 */
+    white-space: pre-wrap; /* 讓空格和換行保留 */
+    font-size: 16px; /* 歌詞字體大小 */
+    margin: 0; /* 去掉預設的外邊距 */
+    line-height: 1.5; /* 增加行間距 */
+    background-color: #f9f9f9; /* 輕微的背景色 */
+    padding: 15px; /* 增加內邊距 */
+    border-radius: 5px; /* 圓角邊框 */
+    border: 1px solid #ddd; /* 邊框 */
+}

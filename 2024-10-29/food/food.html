@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Bistro Chez Pradel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="banner">
+          <h1> Le Bayadère</h1>
+          <nav class="navbar">
+            <ul>
+                <li><a href="#" onclick="showFloor('floor1')">1F - 中式餐廳</a></li>
+                <li><a href="#" onclick="showFloor('floor2')">2F - 西式餐廳</a></li>
+                <li><a href="#" onclick="showFloor('floor3')">3F - 甜點店</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="floorImage" class="floor-image">
+            <!-- <img src="https://png.pngtree.com/thumb_back/fh260/background/20230411/pngtree-kitchen-table-restaurant-background-image_2331741.jpg" alt="樓層餐廳" id="currentImage"> -->
+            <img src="https://png.pngtree.com/background/20231016/original/pngtree-timeless-d-cor-of-a-restaurant-in-a-hotel-3d-concept-picture-image_5583938.jpg" alt="樓層餐廳" id="currentImage">
+        </div>
+        <div id="restaurantInfo" class="restaurant-info">
+            <h2 id="restaurantName">選擇樓層以查看餐廳！</h2>
+            <p id="floorDescription">這裡將顯示餐廳的詳細資訊。</p>
+        </div>
+
+        <div class="reservation-form">
+            <h3>預約表格</h3>
+            <form id="form" onsubmit="submitForm(event)">
+                <label for="name">姓名：</label>
+                <input type="text" id="name" required>
+
+                <label for="date">日期：</label>
+                <input type="date" id="date" required>
+
+                <label for="time">時間：</label>
+                <input type="time" id="time" required>
+
+                <label for="people">人數：</label>
+                <input type="number" id="people" min="1" required>
+
+                <button type="submit">提交預約</button>
+            </form>
+            <p id="confirmationMessage" style="display:none;">感謝您的預約！我們已收到您的信息。</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 你的網站名稱. 版權所有.</p>
+            <p>聯繫我們: <a href="mailto:info@example.com">info@example.com</a></p>
+            <div class="social-media">
+                <a href="https://facebook.com" target="_blank">Facebook</a>
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://instagram.com" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </footer>
+    
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
