@@ -84,7 +84,9 @@ body {
     object-position: center; /* 圖片居中 */
 }
 
-
+h3{
+    text-align: center;
+}
 
 
 .restaurant-info {
@@ -110,24 +112,30 @@ p {
 
 label {
     display: block; /* 块级元素 */
-    margin: 10px 0 5px; /* 上方、下方間距 */
+    margin: 10px 240px 5px; /* 上方、下方間距 */
 }
 
+
 input {
-    width: 100%; /* 輸入框寬度 */
+    display: block;
+    margin: auto;
+    width: 35%; /* 輸入框寬度 */
     padding: 10px; /* 內邊距 */
     border: 1px solid #ccc; /* 邊框顏色 */
     border-radius: 5px; /* 圓角邊框 */
 }
 
 button {
+    display: block;
+    margin: auto;
+    font-weight:bold ;
     background-color: #2c3e50; /* 按鈕背景顏色 */
     color: white; /* 按鈕文字顏色 */
     border: none; /* 移除邊框 */
     padding: 10px 15px; /* 按鈕內邊距 */
     border-radius: 5px; /* 圓角邊框 */
     cursor: pointer; /* 鼠標指針樣式 */
-    margin-top: 10px; /* 按鈕上方間距 */
+    margin-top: 17px; /* 按鈕上方間距 */
 }
 
 button:hover {
