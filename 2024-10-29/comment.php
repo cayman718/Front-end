@@ -6,18 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-      html
+      
       <!-- html -->
       <!-- ctrl + / -->
    
-      php
+     
 
 
       <?php
-         $a=0;
-      
-      
-      
+        //$a = 0;
       ?>
 
 
