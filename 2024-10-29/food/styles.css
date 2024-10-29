@@ -167,3 +167,15 @@ button:hover {
 .social-media {
     margin-top: 15px; /* 與其他內容的間距 */
 }
+
+.social-media a {
+    color: #f39c12; /* 圖標顏色 */
+    font-size: 24px; /* 圖標大小 */
+    margin: 0 15px; /* 圖標間距 */
+    transition: color 0.3s, transform 0.3s; /* 漸變效果 */
+}
+
+.social-media a:hover {
+    color: #ffffff; /* 鼠標懸停時變為白色 */
+    transform: scale(1.1); /* 鼠標懸停時放大 */
+}
