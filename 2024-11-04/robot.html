@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>機器人</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e0e0e0;
+        }
+        .robot {
+            text-align: center;
+        }
+        .head {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50; /* 機器人頭部顏色 */
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .eyes {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+        }
+        .eye {
+            width: 15px;
+            height: 15px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 5px;
+        }
+        .body {
+            width: 120px;
+            height: 150px;
+            background-color: #2196F3; /* 機器人身體顏色 */
+            margin: 0 auto; /*上下 左右*/
+            position: relative;
+            border-radius: 10px;
+        }
+        .arm {
+            width: 20px;
+            height: 80px;
+            background-color: #FF9800; /* 機器人手臂顏色 */
+            position: absolute;
+        }
+        .left-arm {
+            left: -20px;
+            top: 20px;
+        }
+        .right-arm {
+            right: -20px;
+            top: 20px;
+        }
+        .legs {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .leg {
+            width: 40px;
+            height: 100px;
+            background-color: #f44336; /* 機器人腿部顏色 */
+        }
+    </style>
+</head>
+<body>
+    <div class="robot">
+        <!-- 頭部 -->
+        <div class="head">
+            <div class="eyes">
+                <div class="eye"></div>
+                <div class="eye"></div>
+            </div>
+        </div>
+        
+        <!-- 身體 -->
+        <div class="body">
+            <div class="arm left-arm"></div>
+            <div class="arm right-arm"></div>
+        </div>
+        
+        <!-- 腿部 -->
+        <div class="legs">
+            <div class="leg"></div>
+            <div class="leg"></div>
+        </div>
+    </div>
+</body>
+</html>

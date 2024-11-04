@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .head {
+            border: 1px solid #000;
+            width: 100px;
+            height: 100px;
+            margin: auto;
+            background-color: green;
+        }
+        .main {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            margin: auto;
+            margin-bottom: 0; /* 確保沒有下邊距 */
+            background-color: #2196F3;
+        }
+        .footer {
+            display: flex;
+            width: 100%;
+            justify-content: center; /* 使腳部居中 */
+            margin-top: 0; /* 負邊距以貼近主體 */
+        }
+        .footer-item {
+            border: 1px solid #000;
+            width: 50px; /* 可以根據需要調整寬度 */
+            height: 80px; /* 調整高度 */
+            margin: 0 15px; /* 增加左右邊距 */
+        }
+        .left-foot {
+            background-color: #f00; /* 左腳紅色 */
+        }
+        .right-foot {
+            background-color: #ffcc00; /* 右腳黃色 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 頭 -->
+    <div class="head"></div>
+
+    <!-- 身體 -->
+    <div class="main"></div>
+
+    <!-- 腳 -->
+    <div class="footer">
+        <div class="footer-item left-foot"></div> <!-- 左腳 -->
+        <div class="footer-item right-foot"></div> <!-- 右腳 -->
+    </div>
+    
+</body>
+</html>
