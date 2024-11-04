@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>background</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            /*overflow: hidden;*/
+             /* 網頁失去往下滑的能力 */
+        } 
+        .bgc{
+            background-image: url(./img/圖片.jpg);
+            box-sizing: border-box;
+            width: 260px;
+            height: 400px;
+            background-position:bottom center  ;
+        }
+        .box-img{
+            /*固定地方隱藏*/
+            overflow: hidden;
+            width: 260px;
+            height: 400px;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <h1>img圖片</h1>
+    <img src="img/圖片.jpg" alt="">
+    <hr>
+
+    <h1>box background-img</h1>
+    <div class="bgc"></div>
+    <hr>
+
+    <h1>box image</h1>
+    <div class="box-img">
+       <img src="./img/圖片.jpg" alt="">
+    </div>
+</body>
+</html>
