@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>absolute</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .green-box{
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: lightgreen;
+        }
+        .pink-box{
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: 0;
+            bottom: 0;
+            background-color: lightpink;
+        }
+        .blue-box{
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: 0;
+            top: 0;
+            background-color: lightblue;
+        }
+        .black-box{
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            top: 0;
+            left: 0;
+            background-color: black;
+        }
+        .red-box{
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            left: 0;
+            bottom: 0;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="green-box">
+        <div class="pink-box">
+
+        </div>
+        <div class="black-box">
+
+        </div>
+        <div class="blue-box">
+
+        </div>
+        <div class="red-box">
+
+        </div>
+    </div>
+</body>
+</html>
