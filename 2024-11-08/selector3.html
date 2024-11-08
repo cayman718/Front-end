@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*相鄰選擇器*/
+        /*只有相鄰的才會選到*/
+        div+p{
+            background-color: lawngreen;
+        }
+    </style>
+</head>
+<body>
+    <!-- 只有相鄰的才會選到 -->
+    <div>
+        <p>p1 Lorem ipsum dolor sit amet.</p>
+        <p>p2 Lorem ipsum dolor sit amet.</p>
+    </div>
+    <p>p3 Lorem ipsum dolor sit amet.</p>
+
+
+    <div>
+        <p>p4 Lorem ipsum dolor sit amet.</p>
+    </div>
+
+</body>
+</html>
