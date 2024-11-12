@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技未來感萬年曆封面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url(./img/pexels-therato-3472764.jpg) no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+
+        /* 半透明背景層 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* 標題部分 - 保留科技感 */
+        .header {
+            font-size: 4em;
+            font-weight: bold;
+            color: #00FFEF;
+            text-shadow: 0 0 25px #00FFEF, 0 0 35px #00FFEF, 0 0 50px #00FFEF;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        /* 日期部分 */
+        .date {
+            font-size: 2em;
+            margin-top: 20px;
+            color: #FFF;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: date-glow 2s ease-in-out infinite alternate;
+        }
+
+        /* 年份和月份切換按鈕 */
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            background-color: #00FFEF;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #00C6FF;
+        }
+
+        .neon-line {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 3px;
+            background: linear-gradient(90deg, #00FFEF, #00C6FF, #00FFEF);
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 200, 255, 0.8);
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 25px #00FFEF, 0 0 35px #00FFEF, 0 0 50px #00FFEF;
+            }
+            100% {
+                text-shadow: 0 0 40px #00FFEF, 0 0 70px #00FFEF, 0 0 100px #00FFEF;
+            }
+        }
+
+        @keyframes date-glow {
+            0% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.6);
+            }
+            100% {
+                text-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 255, 255, 0.9);
+            }
+        }
+
+        .calendar {
+            margin-top: 40px;
+            border-collapse: collapse;
+            width: 80%;
+            text-align: center;
+            font-size: 1.2em;
+            border-radius: 12px;
+            background-color: #f3f5f9;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2), 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .calendar th, .calendar td {
+            padding: 16px;
+            border: 1px solid #00FFEF;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .calendar th {
+            background-color: #2A3C56;
+            color: #00FFEF;
+        }
+
+        .calendar td {
+            background-color: #ffffff;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .calendar td:hover {
+            background-color: #00FFEF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .calendar td.empty {
+            background-color: #f3f5f9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 半透明層 -->
+    <div class="overlay"></div>
+
+    <!-- 內容容器 -->
+    <div class="container">
+        <div class="header">2024</div>
+        <div class="date" id="current-date">January 2024</div>
+
+        <!-- 年份和月份切換按鈕 -->
+        <div class="controls">
+            <button class="btn" id="prev-month">Prev Month</button>
+            <button class="btn" id="next-month">Next Month</button>
+            <button class="btn" id="prev-year">Prev Year</button>
+            <button class="btn" id="next-year">Next Year</button>
+        </div>
+
+        <div class="neon-line"></div>
+
+        <!-- 萬年曆表格 -->
+        <table class="calendar" id="calendar-table">
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+                <!-- 日期格子會在 JavaScript 中動態生成 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 初始化年份和月份
+        let currentYear = 2024;
+        let currentMonth = 0; // 0 = January, 11 = December
+
+        // 更新顯示的日期
+        function updateDateDisplay() {
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const dateDisplay = document.getElementById("current-date");
+            dateDisplay.textContent = `${months[currentMonth]} ${currentYear}`;
+        }
+
+        // 生成當前月份的萬年曆
+        function generateCalendar() {
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+            const calendarBody = document.getElementById("calendar-body");
+
+            // 清空表格
+            calendarBody.innerHTML = "";
+
+            let row = document.createElement("tr");
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                row.appendChild(document.createElement("td"));
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cell = document.createElement("td");
+                cell.textContent = day;
+                row.appendChild(cell);
+
+                if (row.children.length === 7) {
+                    calendarBody.appendChild(row);
+                    row = document.createElement("tr");
+                }
+            }
+
+            // 最後一行
+            if (row.children.length > 0) {
+                calendarBody.appendChild(row);
+            }
+        }
+
+        // 切換到上一個月
+        document.getElementById("prev-month").addEventListener("click", () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            updateDateDisplay();
+            generateCalendar();
+        });
+
+        // 切換到下一個月
+        document.getElementById("next-month").addEventListener("click", () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            updateDateDisplay();
+            generateCalendar();
+        });
+
+        // 切換到上一個年份
+        document.getElementById("prev-year").addEventListener("click", () => {
+            currentYear--;
+            updateDateDisplay();
+            generateCalendar();
+        });
+
+        // 切換到下一個年份
+        document.getElementById("next-year").addEventListener("click", () => {
+            currentYear++;
+            updateDateDisplay();
+            generateCalendar();
+        });
+
+        // 初始化頁面
+        updateDateDisplay();
+        generateCalendar();
+    </script>
+
+</body>
+</html>

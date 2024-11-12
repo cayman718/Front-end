@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .item:last-child {
+            border-bottom: none;
+        }
+        .box {
+            flex: 1;
+            text-align: center;
+        }
+        .box img {
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .input-qty {
+            width: 60px;
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+        }
+        .input-qty:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .total {
+            font-size: 18px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .checkout {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .checkout button {
+            padding: 12px 25px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .checkout button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            <div class="box">
+                <img src="./img/chocolate.jpg" alt="Chocolate">
+            </div>
+            <div class="box price">
+                $160
+            </div>
+            <div class="box">
+                <input type="number" class="input-qty" value="1" min="0">
+            </div>
+            <div class="box total">
+                $160
+            </div>
+        </div>
+        <div class="item">
+            <div class="box">
+                <img src="./img/Pure Matcha Cream.jpg" alt="Pure Matcha Cream">
+            </div>
+            <div class="box price">
+                $180
+            </div>
+            <div class="box">
+                <input type="number" class="input-qty" value="1" min="0">
+            </div>
+            <div class="box total">
+                $180
+            </div>
+        </div>
+        <div class="item">
+            <div class="box">
+                <img src="./img/Vanilla Cream.jpg" alt="Vanilla Cream">
+            </div>
+            <div class="box price">
+                $200
+            </div>
+            <div class="box">
+                <input type="number" class="input-qty" value="1" min="0">
+            </div>
+            <div class="box total">
+                $200
+            </div>
+        </div>
+        <div class="checkout">
+            <button onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        function goToCheckout() {
+            // 跳轉到結帳頁面
+            window.location.href = 'cashout.html'; // 請確保這裡的路徑正確
+        }
+    </script>
+</body>
+</html>
