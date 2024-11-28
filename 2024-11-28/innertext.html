@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品列表</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+      }
+
+      .product-box {
+        background-color: #fff;
+        padding: 15px;
+        width: 250px;
+        height: 275px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .sale-tag {
+        position: absolute;
+        top: -7px;
+        left: -7px;
+        background-color: #ff4444;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        display: none;
+      }
+
+      .product-info {
+        margin-top: 17px;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      .hint {
+        text-align: center;
+        color: #666;
+        margin-bottom: 15px;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .product-box {
+          width: 250px;
+          max-width: 350px;
+          height: 250px;
+        }
+
+        .product-image {
+          height: 185px;
+        }
+
+        .hint {
+          font-size: 14px;
+          padding: 0 20px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .product-box {
+          width: 250px;
+          height: 250px;
+        }
+
+        .product-image {
+          height: 185px;
+        }
+
+        .sale-tag {
+          font-size: 12px;
+          padding: 4px 8px;
+        }
+      }
+
+      .product-box:hover .product-image {
+        transform: scale(1.1);
+      }
+
+      .image-container {
+        overflow: hidden;
+        border-radius: 4px;
+      }
+
+      .product-box:hover .product-image {
+        filter: brightness(1.1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+
+      .product-box:hover .product-image {
+        transform: scale(1.1) rotate(2deg);
+      }
+    </style>
+  </head>
+  <body>
+    <p class="hint">👆 點擊商品可查看優惠資訊</p>
+
+    <div class="container">
+      <!-- 商品1 -->
+      <div id="product1" class="product-box">
+        <span id="saleTag1" class="sale-tag">優惠</span>
+        <div class="image-container">
+          <img src="./img/caramel.jpg" alt="焦糖星冰樂" class="product-image" />
+        </div>
+        <div class="product-info">
+          焦糖星冰樂
+          <br />
+          原價:$200
+        </div>
+      </div>
+
+      <!-- 商品2 -->
+      <div id="product2" class="product-box">
+        <span id="saleTag2" class="sale-tag">優惠</span>
+        <div class="image-container">
+          <img
+            src="./img/Chocolate Cream.jpg"
+            alt="摩卡可可碎片星冰樂"
+            class="product-image"
+          />
+        </div>
+        <div class="product-info">
+          摩卡可可碎片星冰樂
+          <br />
+          原價:$180
+        </div>
+      </div>
+
+      <!-- 商品3 -->
+      <div id="product3" class="product-box">
+        <span id="saleTag3" class="sale-tag">優惠</span>
+        <div class="image-container">
+          <img
+            src="./img/Java Chip.jpg"
+            alt="巧克力可可碎片星冰樂"
+            class="product-image"
+          />
+        </div>
+        <div class="product-info">
+          巧克力可可碎片星冰樂
+          <br />
+          原價:$150
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 為每個商品加滑鼠事件
+      function setupProduct(productId, saleTagId, originalInfo, saleInfo) {
+        const product = document.getElementById(productId);
+        const saleTag = document.getElementById(saleTagId);
+        const productInfo = product.querySelector(".product-info");
+        let isShowingSale = false;
+
+      //   product.addEventListener("mouseover", function () {
+      //     productInfo.innerText = saleInfo;
+      //     saleTag.style.display = "block";
+      //   });
+
+      //   product.addEventListener("mouseout", function () {
+      //     productInfo.innerText = originalInfo;
+      //     saleTag.style.display = "none";
+      //   });
+      // }
+      product.addEventListener("click", function() {
+        if (!isShowingSale) {  // 如果目前不是優惠狀態
+            productInfo.innerText = saleInfo;     // 顯示優惠資訊
+            saleTag.style.display = "block";      // 顯示優惠標籤
+        } else {  // 如果目前是優惠狀態
+            productInfo.innerText = originalInfo;  // 顯示原始資訊
+            saleTag.style.display = "none";       // 隱藏優惠標籤
+        }
+        isShowingSale = !isShowingSale;  // 切換狀態
+    });
+}
+
+      // 設置每個商品的資訊
+      setupProduct(
+        "product1",
+        "saleTag1",
+        "焦糖星冰樂\n原價:$200",
+        "🌟 限時優惠活動 🌟\n優惠價：$150\n加購小杯美式咖啡只要+$30"
+      );
+
+      setupProduct(
+        "product2",
+        "saleTag2",
+        "摩卡可可碎片星冰樂\n原價：$180",
+        "⭐ 會員專屬優惠 ⭐\n特價：$130\n消費滿$500送冰淇淋"
+      );
+
+      setupProduct(
+        "product3",
+        "saleTag3",
+        "巧克力可可碎片星冰樂\n原價：$150",
+        "💝 本日特惠 💝\n優惠價：$100\n買大送中杯拿鐵"
+      );
+    </script>
+  </body>
+</html>
