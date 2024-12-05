@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>輸入框提交 JSON 資料</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <h1>請輸入您的資料</h1>
+
+    <!-- 輸入框讓使用者輸入資料 -->
+    <input type="text" id="name" placeholder="請輸入您的名字" />
+    <input type="number" id="age" placeholder="請輸入您的年齡" />
+    <button id="submitBtn">提交資料</button>
+
+    <h2>回傳結果：</h2>
+    <div id="result"></div>
+
+    <script>
+      $(document).ready(function () {
+        // 監聽提交按鈕的點擊事件
+        $("#submitBtn").click(function () {
+          // 取得使用者輸入的資料
+          var name = $("#name").val();
+          var age = $("#age").val();
+
+          // 檢查輸入框是否有填寫資料
+          if (name && age) {
+            // 發送 AJAX 請求
+            $.ajax({
+              url: "server.php", // PHP 端的文件
+              type: "POST", // 使用 POST 請求
+              dataType: "json", // 期望返回的資料格式是 JSON
+              data: {
+                name: name,
+                age: age,
+              },
+              success: function (response) {
+                // 顯示回傳的 JSON 資料
+                var resultText = "伺服器返回的資料：<br>";
+                $.each(response, function (key, value) {
+                  resultText += key + ": " + value + "<br>";
+                });
+                $("#result").html(resultText); // 顯示在頁面上
+              },
+              error: function () {
+                // 如果 AJAX 請求失敗
+                $("#result").html("資料提交失敗，請稍後再試。");
+              },
+            });
+          } else {
+            // 如果輸入框沒有填寫資料
+            alert("請填寫所有欄位！");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
