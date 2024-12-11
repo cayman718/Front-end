@@ -18,6 +18,9 @@
     <div id="result"></div>
 
     <script>
+      // jqsubmit 可以直接打出整個函式
+      $(document).ready(function () {});
+
       $(document).ready(function () {
         // 監聽提交按鈕的點擊事件
         $("#submitBtn").click(function () {
@@ -43,6 +46,7 @@
                   resultText += key + ": " + value + "<br>";
                 });
                 $("#result").html(resultText); // 顯示在頁面上
+                console.log(response);
               },
               error: function () {
                 // 如果 AJAX 請求失敗

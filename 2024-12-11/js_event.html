@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .btn {
+        width: 10%;
+        height: 10%;
+        background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- (this)代表的是觸發事件的元素 點哪個按鈕 this就是哪個按鈕 -->
+    <button class="btn" onclick="hide(this);">隱藏</button>
+    <script>
+      function hide(ele) {
+        //(ele)代表的是參數放到(this)
+        ele.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
