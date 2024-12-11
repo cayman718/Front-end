@@ -20,6 +20,22 @@
         //(ele)代表的是參數放到(this)
         ele.style.display = "none";
       }
+
+      //1.引用函数（不加括號）當使用者點擊按鈕，瀏覽器才會調用 displayDate 這個函數
+      //是函数本身，它不会立即执行，而是等到点击按钮时才会执行
+      function displayDate() {
+        console.log("Current date and time: " + new Date());
+      }
+
+      document.getElementById("myBtn").onclick = displayDate; //onclick後方是引用函數不加()
+
+      //2.立即调用函数（加括號）
+      //displayDate() 這樣寫的話，表示 立刻執行 displayDate 函數，并不会等到点击按钮才执行。
+      function displayDate() {
+        console.log("Current date and time: " + new Date());
+      }
+
+      document.getElementById("myBtn").onclick = displayDate();
     </script>
   </body>
 </html>

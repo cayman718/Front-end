@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品折價計算</title>
+    <style>
+      table {
+        width: 50%;
+        margin: 20px auto;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      input {
+        padding: 5px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">商品折價計算</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>商品名稱</th>
+          <th>原價 (NT$)</th>
+          <th>折扣 (%)</th>
+          <th>折後價 (NT$)</th>
+        </tr>
+      </thead>
+      <tbody id="productList">
+        <tr>
+          <td>商品 1</td>
+          <td><input type="number" value="1000" class="price" /></td>
+          <td><input type="number" value="10" class="discount" /></td>
+          <td><span class="discountedPrice">900</span></td>
+        </tr>
+        <tr>
+          <td>商品 2</td>
+          <td><input type="number" value="2000" class="price" /></td>
+          <td><input type="number" value="15" class="discount" /></td>
+          <td><span class="discountedPrice">1700</span></td>
+        </tr>
+        <tr>
+          <td>商品 3</td>
+          <td><input type="number" value="500" class="price" /></td>
+          <td><input type="number" value="5" class="discount" /></td>
+          <td><span class="discountedPrice">475</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="text-align: center">
+      <button onclick="calculateDiscount()">計算折扣</button>
+      <h3>總價：<span id="totalPrice">3075</span> NT$</h3>
+    </div>
+
+    <script>
+      function calculateDiscount() {
+        let totalPrice = 0;
+
+        // 获取所有商品行
+        const rows = document.querySelectorAll("#productList tr");
+
+        rows.forEach((row) => {
+          const priceInput = row.querySelector(".price");
+          const discountInput = row.querySelector(".discount");
+          const discountedPriceSpan = row.querySelector(".discountedPrice");
+
+          // 获取原价和折扣百分比
+          const price = parseFloat(priceInput.value);
+          const discount = parseFloat(discountInput.value);
+
+          // 计算折后价格
+          const discountedPrice = price - price * (discount / 100);
+
+          // 更新折后价格显示
+          discountedPriceSpan.textContent = discountedPrice.toFixed(2);
+
+          // 计算总价
+          totalPrice += discountedPrice;
+        });
+
+        // 更新总价显示
+        document.getElementById("totalPrice").textContent =
+          totalPrice.toFixed(2);
+      }
+    </script>
+  </body>
+</html>
