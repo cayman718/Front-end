@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="myButton">點我</button>
+
+    <script>
+      //這個event 是一個參數，用來接受事件對象，事件處理函數會接收到這個事件對象，並可以利用它來訪問事件的各種屬性
+      document.getElementById("myButton").addEventListener("click", (event) => {
+        // 使用解構賦值，取得 target 的 id
+        const { id } = event.target; //event target是觸發事件的元素(像是按鈕)
+        console.log("按鈕 ID:", id);
+        console.log(event.target);
+      });
+    </script>
+  </body>
+</html>

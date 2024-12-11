@@ -12,15 +12,19 @@
 
     <script>
       let url = "https://fakestoreapi.com/products";
-      function getData(e) {
+      function getData() {
         fetch(url)
           .then(function (response) {
+            //
             return response.json();
           })
           .then(function (data) {
+            //
             let result = document.querySelector("#result");
+            result.innerHTML = ""; //清空畫面資料
             for (i = 0; i < data.length; i++) {
-              let product = data[i];
+              //抓取每一筆資料
+              let product = data[i]; //data[i]抓取每筆data 利用[i]遍立每一筆資料
               console.log(product.title);
               result.innerHTML += "<div>" + product.title;
             }
