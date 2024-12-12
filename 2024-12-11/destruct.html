@@ -16,6 +16,11 @@
         console.log("按鈕 ID:", id);
         console.log(event.target);
       });
+
+      //obj代表事件本身<div>這區塊 (obj) 是在函數定義時指定的參數
+      function mOver(obj) {
+        obj.innerHTML = "Thank You"; //obj. 是用來操作該參數所代表的物件
+      }
     </script>
   </body>
 </html>

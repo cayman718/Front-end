@@ -1,220 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
 
-        }
+      td,
+      th {
+        border: 1px solid lightgrey;
+        padding: 8px;
+        text-align: center;
+      }
 
-        td,
-        th {
-            border: 1px solid lightgrey;
-            padding: 8px;
-            text-align: center;
-        }
+      tr:nth-child(even) {
+        /* background-color: #dddddd; */
+      }
 
-        tr:nth-child(even) {
-            /* background-color: #dddddd; */
-        }
+      .text-red {
+        color: red;
+        font-size: 30px;
+      }
+
+      td img {
+        width: 300px;
+      }
+
+      input {
+        border-radius: 8px;
+        border: none;
+        background-color: lightgray;
+        text-align: center;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <h2>SHOP</h2>
 
     <table>
-        <tr>
-            <!-- <th>id</th> -->
-            <th width="15%">pic</th>
-            <th width="20%">desc</th>
-            <th width="10%">num</th>
-            <th>total</th>
-        </tr>
+      <tr>
+        <!-- <th>id</th> -->
+        <th width="15%">pic</th>
+        <th width="20%">desc</th>
+        <th width="10%">num</th>
+        <th>total</th>
+      </tr>
 
-        <tr>
-            <td>
-                <img src="https://picsum.photos/id/20/180/160" alt="" srcset="">
-            </td>
-            <td>
-                <p>
-                    茶
-                </p>
-                <p id="price1" data-price="200">
-                    200元
-                </p>
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, quidem.
-                </p>
+      <tr>
+        <td>
+          <img src="./img/caramel.jpg" alt="" srcset="" />
+        </td>
+        <td>
+          <p>焦糖星冰樂</p>
+          <p class="priceClass" id="price1" data-price="200">200元</p>
+          <p>
+            以星巴克咖啡、乳品及焦糖風味糖漿調製而成，搭配鮮奶油及甜美焦糖醬，帶來冰涼宜人的享受。
+          </p>
+        </td>
+        <td>
+          <input
+            class="inputClass"
+            type="number"
+            name=""
+            id="input1"
+            value="0"
+            max="10"
+            min="0"
+          />
+        </td>
+        <td>
+          <p class="totalClass" id="total1">0</p>
+        </td>
+      </tr>
 
-            </td>
-            <td>
-                <input type="number" name="" id="input1" value="0" max="10" min="0">
-            </td>
-            <td>
-                <p id="total1">
-                    0
-                </p>
-            </td>
-        </tr>
+      <tr>
+        <td>
+          <img src="./img/Chocolate Cream.jpg" alt="" srcset="" />
+        </td>
+        <td>
+          <p>巧克力可可碎片星冰樂</p>
+          <p class="priceClass" id="price2" data-price="100">100元</p>
+          <p>
+            暢銷口味之一，以摩卡醬、乳品及可可碎片調製，加上細緻鮮奶油及摩卡醬，濃厚的巧克力風味及多重口感，深獲喜愛。
+          </p>
+        </td>
+        <td>
+          <input
+            class="inputClass"
+            type="number"
+            name=""
+            id="input2"
+            value="0"
+            max="10"
+            min="0"
+          />
+        </td>
+        <td>
+          <p class="totalClass" id="total2">0</p>
+        </td>
+      </tr>
 
-        <tr>
-            <td>
-                <img src="https://picsum.photos/id/22/180/160" alt="" srcset="">
-            </td>
-            <td>
-                <p>
-                    咖啡
-                </p>
-                <p id="price2" data-price="100">
-                    100元
-                </p>
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, quidem.
-                </p>
-
-            </td>
-            <td>
-                <input type="number" name="" id="input2" value="0" max="10" min="0">
-            </td>
-            <td>
-                <p id="total2">
-                    0
-                </p>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <img src="https://picsum.photos/id/23/180/160" alt="" srcset="">
-            </td>
-            <td>
-                <p>
-                    礦泉水
-                </p>
-                <p id="price3" data-price="50">
-                    50元
-                </p>
-                <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore, quidem.
-                </p>
-
-            </td>
-            <td>
-                <input type="number" name="" id="input3" value="0" max="10" min="0">
-            </td>
-            <td>
-                <p id="total3">
-                    0
-                </p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                總共金額為
-            </td>
-            <!-- <td>
+      <tr>
+        <td>
+          <img src="./img/Java Chip.jpg" alt="" srcset="" />
+        </td>
+        <td>
+          <p>焦糖可可碎片星冰樂</p>
+          <p class="priceClass" id="price3" data-price="50">50元</p>
+          <p>
+            暢銷口味之一，融合了星巴克咖啡、乳品、焦糖風味糖漿及可可碎片，加上鮮奶油與焦糖醬，香甜細緻的風味與多層次口感，深獲喜愛。
+          </p>
+        </td>
+        <td>
+          <input
+            class="inputClass"
+            type="number"
+            name=""
+            id="input3"
+            value="0"
+            max="10"
+            min="0"
+          />
+        </td>
+        <td>
+          <p class="totalClass" id="total3">0</p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">總共金額為</td>
+        <!-- <td>
             </td>
             <td>
             </td> -->
-            <td>
-                <p id="sumResult">
-                     0 元
-                </p>
-
-            </td>
-        </tr>
-
+        <td>
+          <p id="sumResult">0 元</p>
+        </td>
+      </tr>
     </table>
 
-    <hr>
+    <hr />
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script>
-        $(document).ready(function () {
-            // 1.bind
-            const price1 = $('#price1');
-            const input1 = $('#input1');
-            const total1 = $('#total1');
+      $(document).ready(function () {
+        // function
+        // get all Result => sum
+        function getSum() {
+          let sum = 0;
+          totalClass.each(function (index, element) {
+            console.log("index", index);
+            console.log("element", element);
+            console.log("this", this);
 
-            const price2 = $('#price2');
-            const input2 = $('#input2');
-            const total2 = $('#total2');
+            let getTotalValue = Number($(this).text());
+            sum = sum + getTotalValue;
+          });
 
-            const price3 = $('#price3');
-            const input3 = $('#input3');
-            const total3 = $('#total3');
+          // 重構
+          if (sum >= 200) {
+            sum = sum * 0.8;
+            sumResult.attr("class", "text-red");
+          } else {
+            sumResult.attr("class", "");
+            // sumResult.removeClass('text-red');
+          }
 
-            const sumResult = $('#sumResult');
-            let sum = 0;
+          let resultString = `${sum} 元`;
+          sumResult.text(resultString);
+        }
 
+        // 1.bind
+        const price1 = $("#price1");
+        const input1 = $("#input1");
+        const total1 = $("#total1");
 
-            // 2.action
-            input1.change(function (e) {
-                console.log('chaneg ok');
-                let getPrice1Value = Number(price1.attr('data-price'));
-                let getInput1Value = Number(input1.val());
-                let result1 = getPrice1Value * getInput1Value;
-                console.log(getPrice1Value);
-                console.log(getInput1Value);
-                console.log(result1);
-                total1.text(result1);
+        const priceClass = $(".priceClass");
+        const inputClass = $(".inputClass");
+        const totalClass = $(".totalClass");
 
-                // 
-                sum = sum + result1;
-                console.log('sum', sum);
-                let resultString = `${sum} 元`;
-                sumResult.text(resultString);
+        console.log("priceClass", priceClass);
+        console.log("inputClass", inputClass);
+        console.log("totalClass", totalClass);
 
+        const sumResult = $("#sumResult");
+        let sum = 0;
 
-            });
+        // 2.action
+        $.each(inputClass, function (indexInArray, valueOfElement) {
+          $(this).change(function (e) {
+            console.log("chaneg ok");
 
-            input2.change(function (e) {
-                console.log('chaneg ok');
-                let getPrice2Value = Number(price2.attr('data-price'));
-                let getInput2Value = Number(input2.val());
-                let result2 = getPrice2Value * getInput2Value;
-                console.log(getPrice2Value);
-                console.log(getInput2Value);
-                console.log(result2);
-                total2.text(result2);
+            // now ?
+            console.log("now $(this)", $(this));
 
-                sum = sum + result2;
-                console.log('sum', sum);
-                let resultString = `${sum} 元`;
-                sumResult.text(resultString);
+            // parent() tr
+            myParent = $(this).parent().parent();
+            console.log("myParent", myParent);
 
-            });
+            // find() .class
+            myPrice = myParent.find(".priceClass").attr("data-price");
+            console.log("myPrice", myPrice);
 
-            input3.change(function (e) {
-                console.log('chaneg ok');
-                let getPrice3Value = Number(price3.attr('data-price'));
-                let getInput3Value = Number(input3.val());
-                let result3 = getPrice3Value * getInput3Value;
-                console.log(getPrice3Value);
-                console.log(getInput3Value);
-                console.log(result3);
-                total3.text(result3);
+            myTotal = myParent.find(".totalClass");
 
-                sum = sum + result3;
-                console.log('sum', sum);
-                let resultString = `${sum} 元`;
-                sumResult.text(resultString);
+            let getPriceValue = Number(myPrice);
+            let getInputValue = Number($(this).val());
+            let result = getPriceValue * getInputValue;
+            console.log(getPriceValue);
+            console.log(getInputValue);
+            console.log(result);
+            myTotal.text(result);
 
-            });
-
-
+            getSum();
+          });
         });
+      });
     </script>
-</body>
-
+  </body>
 </html>
