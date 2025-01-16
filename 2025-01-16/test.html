@@ -1,0 +1,91 @@
+<script>
+  let calculator = {
+    // 計算總價的函式
+    calculateTotal(price) {
+      let tax = price * 0.1; // 10% 稅
+      return price + tax;
+    },
+
+    // 1. 直接使用 return 值
+    showPrice(price) {
+      let total = this.calculateTotal(price);
+      console.log(`總價：${total} 元`);
+    },
+
+    // 2. 存在變數中後續使用
+    checkDiscount(price) {
+      let total = this.calculateTotal(price); // 存在變數中
+
+      if (total > 1000) {
+        console.log("可以打折！");
+      }
+
+      // 後面還能繼續用
+      console.log(`打折前金額：${total}`);
+    },
+
+    // 3. 在計算中使用
+    comparePrices(price1, price2) {
+      let total1 = this.calculateTotal(price1);
+      let total2 = this.calculateTotal(price2);
+
+      // return 值可以用在計算中
+      let difference = total1 - total2;
+      console.log(`價差：${difference}`);
+    },
+  };
+
+  // 都可以使用 calculateTotal 的 return 值
+  calculator.showPrice(100);
+  calculator.checkDiscount(2000);
+  calculator.comparePrices(100, 200);
+</script>
+<script>
+  let shop = {
+    // 功能1：計算商品總價
+    calculateItemTotal(price, quantity) {
+      return price * quantity;
+    },
+
+    // 功能2：判斷是否符合折扣
+    checkDiscount(total) {
+      if (total >= 1000) {
+        return "大折扣";
+      } else if (total >= 500) {
+        return "小折扣";
+      } else {
+        return "無折扣";
+      }
+    },
+
+    // 功能3：計算折扣金額
+    calculateDiscount(total, discountType) {
+      switch (discountType) {
+        case "大折扣":
+          return total * 0.8; // 8折
+        case "小折扣":
+          return total * 0.9; // 9折
+        default:
+          return total; // 原價
+      }
+    },
+
+    // 整合以上功能：結帳
+    checkout(price, quantity) {
+      // 1. 計算總價
+      let total = this.calculateItemTotal(price, quantity);
+      console.log(`商品總價：${total}`);
+
+      // 2. 確認折扣類型
+      let discountType = this.checkDiscount(total);
+      console.log(`折扣類型：${discountType}`);
+
+      // 3. 計算折扣後金額
+      let finalPrice = this.calculateDiscount(total, discountType);
+      console.log(`實付金額：${finalPrice}`);
+    },
+  };
+
+  // 測試
+  shop.checkout(600, 2); // 買2件600元商品
+</script>

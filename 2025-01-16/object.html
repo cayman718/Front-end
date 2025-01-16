@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 最新版的 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let obj = {
+        s1: "apple",
+        s2: "cake",
+        s3: "mango",
+        setName(name) {
+          console.log(name);
+        },
+      };
+      let name = "s2";
+      //   console.log(obj.s2);
+      //   console.log(obj["s1"]);
+      //   console.log(obj[name]);
+
+      function sayHello(name) {
+        console.log(name);
+      }
+      //   console.log(sayHello("s1"));
+      //   this.sayHello("kl");
+      obj.setName("monkey");
+    </script>
+  </body>
+</html>

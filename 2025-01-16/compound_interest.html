@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 情境：銀行存款計算器
+      let bankCalculator = {
+        // 計算一年後的金額
+        calculateOneYear(amount) {
+          return amount * 1.02; // 2%利率
+        },
+
+        // 計算多年後的金額
+        calculateMultipleYears(amount, years) {
+          let finalAmount = amount;
+          for (let i = 1; i <= years; i++) {
+            finalAmount = this.calculateOneYear(finalAmount);
+          }
+          return finalAmount;
+        },
+
+        // 顯示每年的金額
+        showYearlyAmount(amount, years) {
+          let currentAmount = amount;
+          for (let year = 1; year <= years; year++) {
+            currentAmount = this.calculateOneYear(currentAmount);
+            console.log(`第 ${year} 年：${currentAmount.toFixed(2)} 元`);
+          }
+        },
+      };
+
+      // 使用這個計算器
+      let initialMoney = 10000; // 存入10000元
+
+      // 1. 計算一年後的金額
+      let afterOneYear = bankCalculator.calculateOneYear(10000);
+      console.log("一年後：", afterOneYear);
+
+      // 2. 計算三年後的金額
+      let afterThreeYears = bankCalculator.calculateMultipleYears(
+        initialMoney,
+        3
+      );
+      console.log("三年後：", afterThreeYears);
+
+      // 3. 顯示每年的金額變化
+      bankCalculator.showYearlyAmount(initialMoney, 3);
+    </script>
+  </body>
+</html>
