@@ -43,14 +43,12 @@ const financialPlanner = {
         let annualSaving = monthlySaving * 12;
 
         for (let year = 1; year <= yearsToRetirement; year++) {
-            // 考慮通膨調整後的年度儲蓄
             let inflationAdjustedSaving = this.calculateInflationAdjusted(
                 annualSaving,
                 year - 1,
                 inflationRate
             );
 
-            // 投資報酬 + 年度儲蓄
             balance = balance * (1 + returnRate) + inflationAdjustedSaving;
 
             portfolio.push({
@@ -65,7 +63,6 @@ const financialPlanner = {
 
     // 生成財務報告
     generateFinancialReport(formData) {
-        // 計算基本數據
         const monthlyIncome = this.calculateMonthlyIncome(
             Number(formData.monthlySalary),
             Number(formData.monthlyExtraIncome)
@@ -81,12 +78,10 @@ const financialPlanner = {
             monthlyExpenses
         );
 
-        // 計算退休相關數據
         const yearsToRetirement = formData.retirementAge - formData.age;
         const retirementYears = this.settings.lifeExpectancy - formData.retirementAge;
         const inflationRate = Number(formData.inflationRate) / 100;
 
-        // 決定投資報酬率範圍
         let returnRateRange;
         switch (formData.riskTolerance) {
             case 'conservative':
@@ -98,12 +93,12 @@ const financialPlanner = {
             case 'aggressive':
                 returnRateRange = this.settings.aggressiveReturn;
                 break;
+            default:
+                returnRateRange = this.settings.moderateReturn;
         }
 
-        // 使用報酬率範圍的平均值
         const returnRate = (returnRateRange.min + returnRateRange.max) / 2;
 
-        // 計算投資組合增長
         const portfolio = this.calculatePortfolioGrowth({
             currentSaving: Number(formData.currentSaving),
             monthlySaving,
@@ -112,7 +107,6 @@ const financialPlanner = {
             inflationRate
         });
 
-        // 計算通膨調整後的目標金額
         const inflationAdjustedTarget = this.calculateInflationAdjusted(
             Number(formData.targetAmount),
             yearsToRetirement,
@@ -123,9 +117,7 @@ const financialPlanner = {
             basicInfo: {
                 name: formData.name,
                 age: formData.age,
-                retirementAge: formData.retirementAge,
-                yearsToRetirement,
-                retirementYears
+                retirementAge: formData.retirementAge
             },
             monthlyFlow: {
                 income: monthlyIncome,
@@ -133,11 +125,11 @@ const financialPlanner = {
                 saving: monthlySaving
             },
             retirement: {
-                currentSaving: formData.currentSaving,
-                targetAmount: formData.targetAmount,
+                yearsToRetirement,
+                retirementYears,
+                targetAmount: Number(formData.targetAmount),
                 inflationAdjustedTarget,
-                returnRate,
-                inflationRate
+                returnRate
             },
             portfolio
         };
@@ -148,32 +140,31 @@ const financialPlanner = {
 document.getElementById('financialForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // 獲取表單數據
     const formData = {
         name: document.getElementById('name').value,
-        age: Number(document.getElementById('age').value),
-        retirementAge: Number(document.getElementById('retirementAge').value),
-        monthlySalary: document.getElementById('monthlySalary').value,
-        monthlyExtraIncome: document.getElementById('monthlyExtraIncome').value,
-        monthlyBasicExpenses: document.getElementById('monthlyBasicExpenses').value,
-        monthlyExtraExpenses: document.getElementById('monthlyExtraExpenses').value,
-        currentSaving: document.getElementById('currentSaving').value,
-        targetAmount: document.getElementById('targetAmount').value,
+        age: parseInt(document.getElementById('age').value),
+        retirementAge: parseInt(document.getElementById('retirementAge').value),
+        monthlySalary: parseInt(document.getElementById('monthlySalary').value),
+        monthlyExtraIncome: parseInt(document.getElementById('monthlyExtraIncome').value),
+        monthlyBasicExpenses: parseInt(document.getElementById('monthlyBasicExpenses').value),
+        monthlyExtraExpenses: parseInt(document.getElementById('monthlyExtraExpenses').value),
+        currentSaving: parseInt(document.getElementById('currentSaving').value),
+        targetAmount: parseInt(document.getElementById('targetAmount').value),
         riskTolerance: document.getElementById('riskTolerance').value,
-        inflationRate: document.getElementById('inflationRate').value
+        inflationRate: parseFloat(document.getElementById('inflationRate').value)
     };
 
-    // 生成報告
     const report = financialPlanner.generateFinancialReport(formData);
 
-    // 顯示結果
-    displayResults(report);
-});
+    // 更新統計數據
+    document.getElementById('monthlySavingStat').textContent =
+        `${report.monthlyFlow.saving.toLocaleString()} 元`;
+    document.getElementById('yearsToRetirementStat').textContent =
+        `${report.retirement.yearsToRetirement} 年`;
 
-// 顯示結果函數
-function displayResults(report) {
-    // 顯示結果卡片
-    document.getElementById('resultCard').style.display = 'block';
+    const finalBalance = report.portfolio[report.portfolio.length - 1].balance;
+    const achievementRate = (finalBalance / report.retirement.inflationAdjustedTarget * 100).toFixed(1);
+    document.getElementById('achievementRateStat').textContent = `${achievementRate}%`;
 
     // 更新基本資訊
     document.getElementById('basicInfoContent').innerHTML = `
@@ -181,12 +172,12 @@ function displayResults(report) {
             <li class="list-group-item">姓名：${report.basicInfo.name}</li>
             <li class="list-group-item">目前年齡：${report.basicInfo.age} 歲</li>
             <li class="list-group-item">預計退休年齡：${report.basicInfo.retirementAge} 歲</li>
-            <li class="list-group-item">距離退休：${report.basicInfo.yearsToRetirement} 年</li>
-            <li class="list-group-item">預期退休後生活：${report.basicInfo.retirementYears} 年</li>
+            <li class="list-group-item">距離退休：${report.retirement.yearsToRetirement} 年</li>
+            <li class="list-group-item">預期退休後生活：${report.retirement.retirementYears} 年</li>
         </ul>
     `;
 
-    // 更新每月收支
+    // 更新收支分析
     document.getElementById('monthlyFlowContent').innerHTML = `
         <ul class="list-group">
             <li class="list-group-item">月收入：${report.monthlyFlow.income.toLocaleString()} 元</li>
@@ -199,11 +190,9 @@ function displayResults(report) {
     // 更新退休規劃
     document.getElementById('retirementPlanContent').innerHTML = `
         <ul class="list-group">
-            <li class="list-group-item">目前存款：${Number(report.retirement.currentSaving).toLocaleString()} 元</li>
-            <li class="list-group-item">目標退休金：${Number(report.retirement.targetAmount).toLocaleString()} 元</li>
-            <li class="list-group-item">考慮通膨後的目標金額：${Math.round(report.retirement.inflationAdjustedTarget).toLocaleString()} 元</li>
-            <li class="list-group-item">預期年投資報酬率：${(report.retirement.returnRate * 100).toFixed(1)}%</li>
-            <li class="list-group-item">預期年通膨率：${(report.retirement.inflationRate * 100).toFixed(1)}%</li>
+            <li class="list-group-item">目前存款：${formData.currentSaving.toLocaleString()} 元</li>
+            <li class="list-group-item">退休目標：${report.retirement.targetAmount.toLocaleString()} 元</li>
+            <li class="list-group-item">預期年報酬率：${(report.retirement.returnRate * 100).toFixed(1)}%</li>
         </ul>
     `;
 
@@ -211,9 +200,10 @@ function displayResults(report) {
     const inflationImpact = report.retirement.inflationAdjustedTarget - report.retirement.targetAmount;
     document.getElementById('inflationImpactContent').innerHTML = `
         <div class="alert alert-info">
-            <p>由於通貨膨脹的影響，您的退休目標金額將需要增加 ${Math.round(inflationImpact).toLocaleString()} 元</p>
-            <p>原始目標：${Number(report.retirement.targetAmount).toLocaleString()} 元</p>
-            <p>通膨調整後：${Math.round(report.retirement.inflationAdjustedTarget).toLocaleString()} 元</p>
+            <p>考慮 ${formData.inflationRate}% 年通膨率的影響：</p>
+            <p>原始目標：${report.retirement.targetAmount.toLocaleString()} 元</p>
+            <p>調整後目標：${Math.round(report.retirement.inflationAdjustedTarget).toLocaleString()} 元</p>
+            <p>通膨影響：${Math.round(inflationImpact).toLocaleString()} 元</p>
         </div>
     `;
 
@@ -237,15 +227,20 @@ function displayResults(report) {
     document.getElementById('yearlyProjectionContent').innerHTML = projectionHtml;
 
     // 更新建議
-    const finalBalance = report.portfolio[report.portfolio.length - 1].balance;
     let suggestionsHtml = '';
-
     if (finalBalance >= report.retirement.inflationAdjustedTarget) {
         suggestionsHtml = `
             <div class="alert alert-success">
                 <h5>恭喜！按照目前規劃，您的退休金額將超過通膨調整後的目標。</h5>
                 <p>預估退休時的資產：${finalBalance.toLocaleString()} 元</p>
                 <p>超出目標：${(finalBalance - report.retirement.inflationAdjustedTarget).toLocaleString()} 元</p>
+                <h6>建議：</h6>
+                <ul>
+                    <li>考慮設立更高的財務目標</li>
+                    <li>可以適度提高生活品質</li>
+                    <li>考慮分散投資風險</li>
+                    <li>規劃遺產傳承</li>
+                </ul>
             </div>
         `;
     } else {
@@ -267,25 +262,25 @@ function displayResults(report) {
 
     document.getElementById('suggestionsContent').innerHTML = suggestionsHtml;
 
-    // 繪製圖表
+    // 顯示結果卡片
+    document.getElementById('resultCard').style.display = 'block';
+
+    // 建立圖表
     createWealthProjectionChart(report);
-}
+});
 
 // 繪製財富預估圖表
 function createWealthProjectionChart(report) {
     const ctx = document.getElementById('wealthProjectionChart').getContext('2d');
 
-    // 準備圖表數據
     const labels = report.portfolio.map(item => `第 ${item.year} 年`);
     const balanceData = report.portfolio.map(item => item.balance);
     const targetLine = new Array(report.portfolio.length).fill(report.retirement.inflationAdjustedTarget);
 
-    // 如果已存在圖表，先銷毀
     if (window.wealthChart) {
         window.wealthChart.destroy();
     }
 
-    // 創建新圖表
     window.wealthChart = new Chart(ctx, {
         type: 'line',
         data: {

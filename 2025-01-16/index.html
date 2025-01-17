@@ -4,72 +4,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>進階財務自由計算機</title>
+    <title>智能財務規劃系統</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem;
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .section-title {
+            color: #2a5298;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .info-icon {
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        .result-card {
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2a5298;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .progress {
+            height: 1rem;
+            border-radius: 0.5rem;
+        }
+        
+        .suggestion-card {
+            border-left: 4px solid #2a5298;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-light">
-    <div class="container py-5">
-        <h1 class="text-center mb-4">進階財務自由計算機</h1>
+<body>
+    <!-- 頁面標題 -->
+    <div class="header-section">
+        <div class="container">
+            <h1 class="text-center">
+                <i class="fas fa-chart-line me-2"></i> 智能財務規劃系統
+            </h1>
+            <p class="text-center mb-0">規劃你的財務自由之路</p>
+        </div>
+    </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow">
+    <div class="container">
+        <div class="row">
+            <!-- 輸入表單區 -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i> 個人資料輸入
+                        </h4>
+                    </div>
                     <div class="card-body">
                         <form id="financialForm">
                             <!-- 基本資訊 -->
-                            <h4 class="mb-3">基本資訊</h4>
+                            <div class="section-title">
+                                <i class="fas fa-info-circle me-2"></i>基本資訊
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">姓名</label>
                                 <input type="text" class="form-control" id="name" required>
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">目前年齡</label>
                                 <input type="number" class="form-control" id="age" required min="0" max="100">
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">期望退休年齡</label>
                                 <input type="number" class="form-control" id="retirementAge" required min="0" max="100" value="65">
                             </div>
 
                             <!-- 收入支出 -->
-                            <h4 class="mb-3 mt-4">每月收支</h4>
+                            <div class="section-title mt-4">
+                                <i class="fas fa-money-bill-wave me-2"></i>收支資訊
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">月薪資收入</label>
                                 <input type="number" class="form-control" id="monthlySalary" required>
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label">每月額外收入（兼職、投資等）</label>
+                                <label class="form-label">每月額外收入</label>
                                 <input type="number" class="form-control" id="monthlyExtraIncome" value="0">
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label">每月基本支出（食衣住行）</label>
+                                <label class="form-label">每月基本支出</label>
                                 <input type="number" class="form-control" id="monthlyBasicExpenses" required>
                             </div>
-
                             <div class="mb-3">
-                                <label class="form-label">每月額外支出（娛樂、購物等）</label>
+                                <label class="form-label">每月額外支出</label>
                                 <input type="number" class="form-control" id="monthlyExtraExpenses" value="0">
                             </div>
 
                             <!-- 資產設定 -->
-                            <h4 class="mb-3 mt-4">資產設定</h4>
+                            <div class="section-title mt-4">
+                                <i class="fas fa-piggy-bank me-2"></i>資產設定
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">目前總資產</label>
                                 <input type="number" class="form-control" id="currentSaving" required>
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">期望退休金額</label>
                                 <input type="number" class="form-control" id="targetAmount" required>
                             </div>
 
                             <!-- 投資設定 -->
-                            <h4 class="mb-3 mt-4">投資設定</h4>
+                            <div class="section-title mt-4">
+                                <i class="fas fa-chart-pie me-2"></i>投資設定
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">風險承受度</label>
                                 <select class="form-select" id="riskTolerance" required>
@@ -78,62 +187,111 @@
                                     <option value="aggressive">積極型 (年報酬率 9-12%)</option>
                                 </select>
                             </div>
-
-                            <!-- 通膨設定 -->
-                            <h4 class="mb-3 mt-4">通膨設定</h4>
                             <div class="mb-3">
                                 <label class="form-label">預期年通膨率 (%)</label>
                                 <input type="number" class="form-control" id="inflationRate" value="2" step="0.1" min="0" max="10">
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100 mt-4">計算</button>
+                            <button type="submit" class="btn btn-primary w-100 mt-4">
+                                <i class="fas fa-calculator me-2"></i>開始計算
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 結果顯示區 -->
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-8">
-                <div class="card shadow" id="resultCard" style="display: none;">
-                    <div class="card-body">
-                        <h3 class="card-title">財務規劃報告</h3>
-
-                        <div id="basicInfo" class="mb-4">
-                            <h4>基本資訊</h4>
-                            <div id="basicInfoContent"></div>
+            <!-- 結果顯示區 -->
+            <div class="col-lg-8">
+                <div id="resultCard" style="display: none;">
+                    <!-- 概要統計 -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>每月儲蓄</h6>
+                                <div class="stat-value" id="monthlySavingStat"></div>
+                            </div>
                         </div>
-
-                        <div id="monthlyFlow" class="mb-4">
-                            <h4>每月收支分析</h4>
-                            <div id="monthlyFlowContent"></div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>預計退休年數</h6>
+                                <div class="stat-value" id="yearsToRetirementStat"></div>
+                            </div>
                         </div>
-
-                        <div id="retirementPlan" class="mb-4">
-                            <h4>退休規劃</h4>
-                            <div id="retirementPlanContent"></div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>達成率</h6>
+                                <div class="stat-value" id="achievementRateStat"></div>
+                            </div>
                         </div>
+                    </div>
 
-                        <div id="inflationImpact" class="mb-4">
-                            <h4>通膨影響</h4>
-                            <div id="inflationImpactContent"></div>
+                    <!-- 圖表區域 -->
+                    <div class="chart-container mt-4">
+                        <canvas id="wealthProjectionChart"></canvas>
+                    </div>
+
+                    <!-- 詳細資訊卡片 -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card result-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-user me-2"></i>基本資訊
+                                    </h5>
+                                </div>
+                                <div class="card-body" id="basicInfoContent"></div>
+                            </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="card result-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-wallet me-2"></i>收支分析
+                                    </h5>
+                                </div>
+                                <div class="card-body" id="monthlyFlowContent"></div>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div id="yearlyProjection" class="mb-4">
-                            <h4>年度財富預估</h4>
+                    <!-- 退休規劃和通膨影響 -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card result-card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-chart-line me-2"></i>退休規劃分析
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="retirementPlanContent"></div>
+                                    <div id="inflationImpactContent" class="mt-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 年度預估表 -->
+                    <div class="card result-card mt-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-table me-2"></i>年度財富預估
+                            </h5>
+                        </div>
+                        <div class="card-body">
                             <div id="yearlyProjectionContent"></div>
                         </div>
+                    </div>
 
-                        <div id="suggestions" class="mb-4">
-                            <h4>財務建議</h4>
-                            <div id="suggestionsContent"></div>
+                    <!-- 建議區域 -->
+                    <div class="card result-card mt-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lightbulb me-2"></i>財務建議
+                            </h5>
                         </div>
-
-                        <!-- 圖表區域 -->
-                        <div id="charts" class="mb-4">
-                            <h4>視覺化分析</h4>
-                            <canvas id="wealthProjectionChart"></canvas>
+                        <div class="card-body">
+                            <div id="suggestionsContent"></div>
                         </div>
                     </div>
                 </div>
@@ -145,8 +303,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- 自訂 JS -->
-    <script src="chart.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
 </body>
 
 </html>
