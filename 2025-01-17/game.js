@@ -81,7 +81,7 @@ class BasketballGame {
 
         // 遊戲狀態
         this.gameStarted = false;
-        this.gameTime = 60; // 60秒遊戲時間
+        this.gameTime = 11; // 60秒遊戲時間
         this.currentTime = this.gameTime;
         this.score = 0;
         this.consecutiveShots = 0; // 連續進球數
@@ -105,6 +105,10 @@ class BasketballGame {
         this.startSound.volume = 0.3;
         this.timeWarningSound.volume = 0.3;
         this.gameOverSound.volume = 0.4;
+
+        // 得分設定
+        this.isLastTenSeconds = false;
+        this.basePoints = 1; // 基礎得分
     }
 
     setupGame() {
@@ -307,6 +311,9 @@ class BasketballGame {
         if (gameOver) gameOver.remove();
         this.timerDisplay.style.color = '#fff';
         this.timerDisplay.style.animation = '';
+
+        this.isLastTenSeconds = false;
+        this.gameContainer.classList.remove('last-ten-seconds');
     }
 
     animateBall() {
@@ -353,81 +360,94 @@ class BasketballGame {
     }
 
     handleScore() {
-        const scoreValue = this.calculateScoreValue();
+        // 直接檢查是否在最後10秒
+        let scoreValue = this.isLastTenSeconds ? 3 : this.calculateScoreValue();
+
+        // 更新分數
         this.score += scoreValue;
         this.scoreElement.textContent = this.score;
 
-        // 播放進球音效
+        // 播放音效
         this.scoreSound.play();
         setTimeout(() => this.crowdCheerSound.play(), 300);
 
-        // 籃網晃動動畫
+        // 籃網動畫
         this.net.classList.add('net-shake');
         setTimeout(() => this.net.classList.remove('net-shake'), 500);
 
         // 顯示得分特效
         this.showScoreEffect(scoreValue);
-        this.showScoreMessage(scoreValue);
+
+        // 顯示得分訊息
+        if (this.isLastTenSeconds) {
+            this.showScoreMessage('最後衝刺！ +3分！');
+        } else {
+            this.showScoreMessage(
+                scoreValue === 3 ? '三分球！' :
+                scoreValue === 2 ? '兩分球！' :
+                '得分！'
+            );
+        }
 
         this.scored = true;
     }
 
     calculateScoreValue() {
-        const netCenter = {
-            x: this.net.getBoundingClientRect().left + this.net.getBoundingClientRect().width / 2,
-            y: this.net.getBoundingClientRect().top
-        };
+        // 最後10秒強制返回3分
+        if (this.isLastTenSeconds) {
+            return 3;
+        }
 
-        const distance = Math.sqrt(
-            Math.pow(this.ballX - netCenter.x, 2) +
-            Math.pow(this.ballY - netCenter.y, 2)
-        );
+        // 計算與籃框的距離
+        const dx = this.ballX - this.netCenterX;
+        const dy = this.ballY - this.netY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        let basePoints;
+        // 正常時間的得分計算
         if (distance >= this.threePointLine) {
-            basePoints = 3;
+            return 3;
         } else if (distance >= this.twoPointLine) {
-            basePoints = 2;
-        } else {
-            basePoints = 1;
+            return 2;
         }
-
-        // 連續進球加分
-        this.consecutiveShots++;
-        if (this.consecutiveShots >= 3) {
-            basePoints *= 2;
-            this.showMessage('連續進球！加倍得分！');
-        }
-
-        return basePoints;
+        return 1;
     }
 
     showScoreEffect(points) {
         const effect = document.createElement('div');
         effect.className = 'score-effect';
+
+        // 在最後10秒添加特殊效果
+        if (this.isLastTenSeconds) {
+            effect.classList.add('last-ten-seconds-score');
+        }
+
         effect.textContent = `+${points}`;
         effect.style.left = this.ballX + 'px';
         effect.style.top = this.ballY + 'px';
         this.gameContainer.appendChild(effect);
 
         // 添加彩色粒子效果
-        this.createScoreParticles();
+        this.createScoreParticles(this.isLastTenSeconds);
 
         setTimeout(() => effect.remove(), 1000);
     }
 
-    showScoreMessage(points) {
-        const messages = points === 3 ? ['完美投籃！', '神準！', '太棒了！'] : ['進球！', '好球！', '得分！'];
+    showScoreMessage(message) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'score-message';
 
-        const message = document.createElement('div');
-        message.className = 'score-message';
-        message.textContent = messages[Math.floor(Math.random() * messages.length)];
-        this.gameContainer.appendChild(message);
+        // 在最後10秒添加特殊樣式
+        if (this.isLastTenSeconds) {
+            messageElement.classList.add('last-ten-seconds-message');
+        }
 
-        setTimeout(() => message.remove(), 1500);
+        messageElement.textContent = message;
+        this.gameContainer.appendChild(messageElement);
+
+        setTimeout(() => messageElement.remove(), 1500);
     }
 
-    createScoreParticles() {
+    createScoreParticles(isLastTenSeconds) {
         for (let i = 0; i < 20; i++) {
             const particle = document.createElement('div');
             particle.className = 'score-particle';
@@ -511,27 +531,26 @@ class BasketballGame {
     }
 
     updateTimerDisplay() {
-        const timerDisplay = document.querySelector('.timer-display');
+        if (!this.gameStarted) return;
 
-        // 更新時間顯示
-        timerDisplay.textContent = Math.ceil(this.currentTime);
+        // 更新顯示
+        this.timerDisplay.textContent = Math.max(0, this.currentTime);
 
-        // 根據剩餘時間調整顯示效果
+        // 檢查是否進入最後10秒
+        if (this.currentTime <= 10 && !this.isLastTenSeconds) {
+            this.handleLastTenSeconds();
+            console.log('當前時間:', this.currentTime, '最後10秒狀態:', this.isLastTenSeconds);
+        }
+
+        // 更新計時器樣式
         if (this.currentTime <= 10) {
-            // 最後10秒特效
-            timerDisplay.style.animation = 'blink 0.5s ease-in-out infinite';
-            timerDisplay.style.color = '#ff0000';
-            timerDisplay.style.fontSize = '52px';
+            this.timerDisplay.style.color = '#ff4d4d';
+            this.timerDisplay.style.animation = 'blink 0.5s infinite';
+        }
 
-            // 播放警告音效
-            if (Math.ceil(this.currentTime) <= 10 && Math.ceil(this.currentTime) > 0) {
-                this.timeWarningSound.play();
-            }
-        } else {
-            // 正常顯示
-            timerDisplay.style.animation = 'none';
-            timerDisplay.style.color = '#fff';
-            timerDisplay.style.fontSize = '48px';
+        // 檢查遊戲結束
+        if (this.currentTime <= 0) {
+            this.endGame();
         }
     }
 
@@ -578,6 +597,24 @@ class BasketballGame {
         this.gameContainer.appendChild(messages);
 
         setTimeout(() => messages.remove(), 1500);
+    }
+
+    handleLastTenSeconds() {
+        this.isLastTenSeconds = true;
+
+        // 播放警告音效
+        this.timeWarningSound.play();
+
+        // 顯示明顯的提示
+        this.showMessage('最後10秒！所有進球都是3分！', 3000);
+
+        // 視覺效果
+        this.gameContainer.classList.add('last-ten-seconds');
+        this.timerDisplay.style.color = '#ff4d4d';
+        this.timerDisplay.style.animation = 'blink 0.5s infinite';
+
+        // 在控制台確認狀態（調試用）
+        console.log('進入最後10秒模式，所有進球將得3分');
     }
 }
 
