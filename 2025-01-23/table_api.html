@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Data Table</title>
+    <!-- link css 順序 1.bs 2.self -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">城市</th>
+            <th scope="col">天氣狀況</th>
+            <th scope="col">溫度</th>
+            <th scope="col">降雨機率</th>
+          </tr>
+        </thead>
+        <tbody id="weatherData">
+          <!-- 資料會動態插入這裡 -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- js include 順序 1.bs 2.jq 3.self -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"
+      integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        let Key = "CWA-B067A3E9-3407-4DD6-9B5A-3B9C7D3CB1DE"; // 替換成您的 API Key
+        let url = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${Key}`;
+
+        $.ajax({
+          type: "get",
+          url: url,
+          dataType: "json",
+          success: function (res) {
+            console.log("完整資料:", res);
+
+            // 取得所有地點的資料
+            let locations = res.records.location;
+
+            // 清空表格內容
+            $("#weatherData").empty();
+
+            // 遍歷每個地點的資料
+            locations.forEach((location, index) => {
+              // 取得天氣資訊
+              let weatherElement = location.weatherElement;
+              let wx = weatherElement[0].time[0].parameter.parameterName; // 天氣狀況
+              let pop = weatherElement[1].time[0].parameter.parameterName; // 降雨機率
+              let minT = weatherElement[2].time[0].parameter.parameterName; // 最低溫
+              let maxT = weatherElement[4].time[0].parameter.parameterName; // 最高溫
+
+              // 建立表格行
+              let row = `
+                <tr>
+                  <th scope="row">${index + 1}</th>
+                  <td>${location.locationName}</td>
+                  <td>${wx}</td>
+                  <td>${minT}°C ~ ${maxT}°C</td>
+                  <td>${pop}%</td>
+                </tr>
+              `;
+
+              // 將行加入表格
+              $("#weatherData").append(row);
+            });
+          },
+          error: function (xhr, status, error) {
+            console.error("錯誤:", error);
+            $("#weatherData").html(`
+              <tr>
+                <td colspan="5" class="text-center text-danger">
+                  發生錯誤：${error}
+                </td>
+              </tr>
+            `);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

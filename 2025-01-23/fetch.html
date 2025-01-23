@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>景點資料查詢</title>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            padding: 8px;
+            width: 200px;
+        }
+        
+        .search-box button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .pagination {
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            padding: 8px 16px;
+            margin: 0 4px;
+            cursor: pointer;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>景點資料查詢</h1>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="輸入關鍵字搜尋...">
+            <button onclick="searchData()">搜尋</button>
+        </div>
+
+        <div id="loading" class="loading">載入中...</div>
+
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>名稱</th>
+                    <th>地址</th>
+                    <th>電話</th>
+                    <th>開放時間</th>
+                    <th>描述</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <div class="pagination">
+            <button onclick="changePage(-1)">上一頁</button>
+            <span id="pageInfo">第 1 頁</span>
+            <button onclick="changePage(1)">下一頁</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const limit = 10;
+
+        function searchData() {
+            const query = document.getElementById('searchInput').value;
+            fetchData(query, currentPage);
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            if (currentPage < 1) currentPage = 1;
+            searchData();
+        }
+
+        function fetchData(query = '', page = 1) {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+
+            fetch(`fetch.php?query=${query}&page=${page}&limit=${limit}`)
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    displayData(data);
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    console.error('Error:', error);
+                });
+        }
+
+        function displayData(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.Name}</td>
+                    <td>${item.Add}</td>
+                    <td>${item.Tel}</td>
+                    <td>${item.Opentime}</td>
+                    <td>${item.Description.substring(0, 100)}...</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('pageInfo').textContent =
+                `第 ${data.page} 頁，共 ${Math.ceil(data.total / data.limit)} 頁`;
+        }
+
+        // 頁面載入時執行第一次查詢
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+        });
+
+        // 按 Enter 鍵也可以搜尋
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchData();
+            }
+        });
+    </script>
+</body>
+
+</html>
