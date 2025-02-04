@@ -1,0 +1,28 @@
+# 保護資料庫設定檔
+<Files "db_connect.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# 保護 .sql 檔案
+<Files "*.sql">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# 保護 .htaccess 檔案
+<Files ".htaccess">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# 防止目錄列表
+Options -Indexes
+
+# 設定預設字元集
+AddDefaultCharset UTF-8
+
+# 強制使用 HTTPS（如果有 SSL 憑證）
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] 
