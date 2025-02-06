@@ -7,6 +7,7 @@
     <title>縣市查詢</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         /* 簡單的樣式 */
         
@@ -54,10 +55,12 @@
         
         .city-card {
             transition: transform 0.2s;
+            cursor: pointer;
         }
         
         .city-card:hover {
             transform: translateY(-2px);
+            background-color: #f8f9fa;
         }
         
         .table th {
@@ -68,6 +71,71 @@
             color: #6c757d;
             margin-bottom: 10px;
         }
+        /* 添加工具提示的樣式 */
+        
+        .tooltip-text {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        /* 閃爍動畫 */
+        
+        @keyframes fade {
+            0% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.8;
+            }
+        }
+        
+        .initial-hint {
+            animation: fade 2s infinite;
+            padding: 12px 15px;
+            background-color: #fff8e6;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ffe69c;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        /* 提示內的按鈕樣式 */
+        
+        .initial-hint button {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: #856404;
+            transition: all 0.3s ease;
+        }
+        
+        .initial-hint button:hover {
+            background-color: #fff3cd;
+            color: #533f03;
+        }
+        /* 收藏按鈕樣式 */
+        
+        .btn-favorite {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-favorite:hover {
+            transform: scale(1.1);
+        }
+        /* Toast 通知樣式 */
+        
+        .toast-container {
+            z-index: 1050;
+        }
+        
+        .toast {
+            background-color: white;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 
@@ -76,18 +144,18 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h1 class="text-center mb-4">
-                    <i class="fas fa-map-marker-alt text-primary"></i> 縣市查詢系統
+                    <i class="fas fa-map-marker-alt text-primary"></i> 全球天氣查詢系統
                 </h1>
 
                 <div class="search-container">
                     <div class="input-group mb-3">
                         <span class="input-group-text">
-                            <i class="fas fa-search"></i>
-                        </span>
-                        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="輸入任何城市名稱 (例如: London, Tokyo, Paris...)" oninput="searchGlobalWeather()">
+                <i class="fas fa-search"></i>
+              </span>
+                        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="輸入任何城市名稱 (例如: London, Tokyo, Paris...)" oninput="searchGlobalWeather()" />
                         <button class="btn btn-outline-secondary" onclick="clearSearch()">
-                            <i class="fas fa-times"></i> 清除
-                        </button>
+                <i class="fas fa-times"></i> 清除
+              </button>
                     </div>
                 </div>
 
@@ -120,37 +188,163 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // 定義全域變數
+        // 定義 API 相關常數
         const apiKey = '6b832a5bba9eb1ab8d9eb3ae4b1d9011';
-        const weatherData = [];
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather`;
+
+        // 定義世界主要城市列表
+        const worldCities = [{
+            name: "Taipei",
+            country: "TW"
+        }, {
+            name: "Tokyo",
+            country: "JP"
+        }, {
+            name: "New York",
+            country: "US"
+        }, {
+            name: "London",
+            country: "GB"
+        }, {
+            name: "Paris",
+            country: "FR"
+        }, {
+            name: "Beijing",
+            country: "CN"
+        }, {
+            name: "Singapore",
+            country: "SG"
+        }, {
+            name: "Sydney",
+            country: "AU"
+        }, {
+            name: "Dubai",
+            country: "AE"
+        }, {
+            name: "Moscow",
+            country: "RU"
+        }, {
+            name: "Seoul",
+            country: "KR"
+        }, {
+            name: "Bangkok",
+            country: "TH"
+        }, {
+            name: "Mumbai",
+            country: "IN"
+        }, {
+            name: "Istanbul",
+            country: "TR"
+        }, {
+            name: "Rome",
+            country: "IT"
+        }, {
+            name: "Cairo",
+            country: "EG"
+        }, {
+            name: "Rio de Janeiro",
+            country: "BR"
+        }, {
+            name: "Berlin",
+            country: "DE"
+        }, {
+            name: "Madrid",
+            country: "ES"
+        }, {
+            name: "Toronto",
+            country: "CA"
+        }, {
+            name: "Hong Kong",
+            country: "HK"
+        }, {
+            name: "Shanghai",
+            country: "CN"
+        }, {
+            name: "Osaka",
+            country: "JP"
+        }, {
+            name: "Amsterdam",
+            country: "NL"
+        }, {
+            name: "Vienna",
+            country: "AT"
+        }];
+
+        // 全域變數
+        let allWeatherData = [];
+        let favorites = JSON.parse(localStorage.getItem('weatherFavorites') || '[]');
+        let currentDisplayData = [];
         let currentPage = 1;
         const itemsPerPage = 5;
 
         const popularCities = [
-            "London,GB", "Paris,FR", "Tokyo,JP", "New York,US",
-            "Sydney,AU", "Beijing,CN", "Moscow,RU", "Dubai,AE",
-            "Singapore,SG", "Seoul,KR", "Toronto,CA", "Mumbai,IN"
+            "London,GB",
+            "Paris,FR",
+            "Tokyo,JP",
+            "New York,US",
+            "Sydney,AU",
+            "Beijing,CN",
+            "Moscow,RU",
+            "Dubai,AE",
+            "Singapore,SG",
+            "Seoul,KR",
+            "Toronto,CA",
+            "Mumbai,IN",
         ];
 
         // 獲取天氣資料
-        async function fetchWeatherData() {
+        async function fetchWeatherData(city) {
             try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+                const response = await fetch(
+                    `${apiUrl}?q=${city.name},${city.country}&units=metric&appid=${apiKey}&lang=zh_tw`
+                );
+                return await response.json();
+            } catch (error) {
+                console.error('獲取天氣資料時發生錯誤:', error);
+                return null;
+            }
+        }
 
-                if (data.success === "true") {
-                    weatherData = data.records.location;
-                    console.log('載入縣市數量:', weatherData.length);
-                    searchWeather();
-                }
+        // 獲取所有城市的天氣資料
+        async function fetchAllWeatherData() {
+            try {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'text-center my-4';
+                loadingDiv.innerHTML = '<div class="spinner-border text-primary" role="status"></div><div>載入中...</div>';
+                document.getElementById('weatherTbody').parentElement.before(loadingDiv);
+
+                allWeatherData = [];
+
+                // 使用 Promise.all 並行請求所有城市的天氣資料
+                const promises = worldCities.map(city => fetchWeatherData(city));
+                const results = await Promise.all(promises);
+
+                allWeatherData = results.filter(data => data && data.cod === 200);
+                currentDisplayData = allWeatherData;
+
+                loadingDiv.remove();
+                displayWeatherWithPagination();
+                setupPagination();
+
             } catch (error) {
                 console.error('獲取天氣資料時發生錯誤:', error);
             }
         }
 
+        // 初始化函數
+        function initialize() {
+            fetchAllWeatherData();
+            updateFilterButtons();
+        }
+
+        // 確保 DOM 載入完成後再執行初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initialize();
+        });
+
         // 新增搜尋函數
         async function searchGlobalWeather() {
-            const city = document.getElementById('searchInput').value.trim();
+            const city = document.getElementById("searchInput").value.trim();
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}&lang=zh_tw`;
 
             try {
@@ -160,19 +354,19 @@
                     displayWeather([data]);
                 }
             } catch (error) {
-                console.error('獲取天氣資料時發生錯誤:', error);
+                console.error("獲取天氣資料時發生錯誤:", error);
             }
         }
 
         function searchWeather() {
-            const searchValue = document.getElementById('searchInput').value.trim();
+            const searchValue = document.getElementById("searchInput").value.trim();
 
             if (!Array.isArray(weatherData)) {
-                console.error('weatherData 不是陣列');
+                console.error("weatherData 不是陣列");
                 return;
             }
 
-            const filteredData = weatherData.filter(item =>
+            const filteredData = weatherData.filter((item) =>
                 item.locationName.includes(searchValue)
             );
 
@@ -183,14 +377,46 @@
 
         // 修改顯示函數
         function displayWeather(data) {
-            const tbody = document.getElementById('weatherTbody');
-            tbody.innerHTML = '';
+            const tbody = document.getElementById("weatherTbody");
+            tbody.innerHTML = "";
+
+            // 檢查提示是否被手動關閉過
+            if (!localStorage.getItem('hintDismissed')) {
+                // 如果提示不存在才添加
+                if (!document.getElementById('clickHint')) {
+                    const hintHTML = `
+                        <div class="initial-hint" id="clickHint">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fas fa-lightbulb text-warning me-2"></i>
+                                    <span>提示：點擊任何城市列可查看更詳細的天氣資訊</span>
+                                </div>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-warning" 
+                                        onclick="dismissHint()"
+                                        title="不再顯示此提示">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.querySelector('.table').insertAdjacentHTML('beforebegin', hintHTML);
+                }
+            }
 
             data.forEach((city, index) => {
+                const isFavorite = favorites.includes(`${city.name},${city.sys.country}`);
                 const row = `
-                    <tr class="city-card">
+                    <tr class="city-card" 
+                        onclick="showWeatherDetails(${JSON.stringify(city).replace(/"/g, '&quot;')})"
+                        title="點擊查看 ${city.name} 的詳細天氣資訊">
                         <td class="text-center">${index + 1}</td>
                         <td>
+                            <button class="btn btn-sm ${isFavorite ? 'btn-warning' : 'btn-outline-warning'} me-2"
+                                    onclick="toggleFavorite(event, '${city.name}', '${city.sys.country}')"
+                                    title="${isFavorite ? '取消收藏' : '加入收藏'}">
+                                <i class="fas fa-star"></i>
+                            </button>
                             <i class="fas fa-city text-primary me-2"></i>
                             ${city.name}, ${city.sys.country}
                         </td>
@@ -218,15 +444,17 @@
         }
 
         function setupPagination(data) {
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
 
             const pageCount = Math.ceil(data.length / itemsPerPage);
 
             if (pageCount > 1) {
                 // 上一頁按鈕
-                const prevButton = document.createElement('button');
-                prevButton.className = `btn btn-outline-primary ${currentPage === 1 ? 'disabled' : ''}`;
+                const prevButton = document.createElement("button");
+                prevButton.className = `btn btn-outline-primary ${
+            currentPage === 1 ? "disabled" : ""
+          }`;
                 prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
                 prevButton.onclick = () => {
                     if (currentPage > 1) {
@@ -239,8 +467,10 @@
 
                 // 頁碼按鈕
                 for (let i = 1; i <= pageCount; i++) {
-                    const button = document.createElement('button');
-                    button.className = `btn btn-outline-primary ${currentPage === i ? 'active' : ''}`;
+                    const button = document.createElement("button");
+                    button.className = `btn btn-outline-primary ${
+              currentPage === i ? "active" : ""
+            }`;
                     button.innerText = i;
                     button.onclick = () => {
                         currentPage = i;
@@ -251,8 +481,10 @@
                 }
 
                 // 下一頁按鈕
-                const nextButton = document.createElement('button');
-                nextButton.className = `btn btn-outline-primary ${currentPage === pageCount ? 'disabled' : ''}`;
+                const nextButton = document.createElement("button");
+                nextButton.className = `btn btn-outline-primary ${
+            currentPage === pageCount ? "disabled" : ""
+          }`;
                 nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
                 nextButton.onclick = () => {
                     if (currentPage < pageCount) {
@@ -266,28 +498,368 @@
         }
 
         function clearSearch() {
-            document.getElementById('searchInput').value = '';
+            document.getElementById("searchInput").value = "";
             searchWeather();
         }
 
         function setupAutocomplete() {
-            const input = document.getElementById('searchInput');
-            const datalist = document.createElement('datalist');
-            datalist.id = 'citySuggestions';
+            const input = document.getElementById("searchInput");
+            const datalist = document.createElement("datalist");
+            datalist.id = "citySuggestions";
 
-            popularCities.forEach(city => {
-                const option = document.createElement('option');
+            popularCities.forEach((city) => {
+                const option = document.createElement("option");
                 option.value = city;
                 datalist.appendChild(option);
             });
 
-            input.setAttribute('list', 'citySuggestions');
+            input.setAttribute("list", "citySuggestions");
             document.body.appendChild(datalist);
         }
 
-        // 初始化
-        fetchWeatherData();
-        setupAutocomplete();
+        function showWeatherDetails(city) {
+            // 移除舊的 modal（如果存在）
+            const oldModal = document.getElementById('weatherModal');
+            if (oldModal) {
+                oldModal.remove();
+            }
+
+            const modalHTML = `
+                <div class="modal fade" id="weatherModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    ${city.name}, ${city.sys.country} 詳細天氣資訊
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <i class="fas fa-sun me-2 text-warning"></i>日出日落
+                                                </h6>
+                                                <p class="mb-2">
+                                                    <i class="fas fa-sunrise me-2"></i>日出：
+                                                    ${new Date(city.sys.sunrise * 1000).toLocaleTimeString()}
+                                                </p>
+                                                <p class="mb-0">
+                                                    <i class="fas fa-sunset me-2"></i>日落：
+                                                    ${new Date(city.sys.sunset * 1000).toLocaleTimeString()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <i class="fas fa-cloud me-2 text-primary"></i>天氣狀況
+                                                </h6>
+                                                <div class="text-center">
+                                                    <img src="https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png" 
+                                                         width="60" class="mb-2">
+                                                    <p class="mb-0">${city.weather[0].description}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <i class="fas fa-thermometer-half me-2 text-danger"></i>溫度詳情
+                                                </h6>
+                                                <div class="row g-3">
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-temperature-high me-2"></i>目前溫度：
+                                                            ${Math.round(city.main.temp)}°C
+                                                        </p>
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-hand-holding-water me-2"></i>體感溫度：
+                                                            ${Math.round(city.main.feels_like)}°C
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-temperature-low me-2"></i>最低溫度：
+                                                            ${Math.round(city.main.temp_min)}°C
+                                                        </p>
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-temperature-high me-2"></i>最高溫度：
+                                                            ${Math.round(city.main.temp_max)}°C
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">
+                                                    <i class="fas fa-tachometer-alt me-2 text-success"></i>其他資訊
+                                                </h6>
+                                                <div class="row g-3">
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-tint me-2"></i>濕度：
+                                                            ${city.main.humidity}%
+                                                        </p>
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-wind me-2"></i>風速：
+                                                            ${Math.round(city.wind.speed)} m/s
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-compress-alt me-2"></i>氣壓：
+                                                            ${city.main.pressure} hPa
+                                                        </p>
+                                                        <p class="mb-2">
+                                                            <i class="fas fa-eye me-2"></i>能見度：
+                                                            ${(city.visibility / 1000).toFixed(1)} km
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            const modal = new bootstrap.Modal(document.getElementById('weatherModal'));
+            modal.show();
+
+            // 移除舊的 modal
+            document.getElementById('weatherModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+
+        // 修改關閉提示的函數
+        function dismissHint() {
+            const hint = document.getElementById('clickHint');
+            if (hint) {
+                // 添加淡出動畫
+                hint.style.transition = 'opacity 0.5s ease-out';
+                hint.style.opacity = '0';
+
+                // 等待動畫完成後移除元素
+                setTimeout(() => {
+                    hint.remove();
+                }, 500);
+
+                // 記錄使用者已關閉提示
+                localStorage.setItem('hintDismissed', 'true');
+            }
+        }
+
+        // 添加重置提示的函數（可選）
+        function resetHint() {
+            localStorage.removeItem('hintDismissed');
+            location.reload(); // 重新載入頁面以顯示提示
+        }
+
+        // 切換收藏狀態的函數
+        function toggleFavorite(event, cityName, countryCode) {
+            event.stopPropagation(); // 防止觸發行的點擊事件
+
+            const cityKey = `${cityName},${countryCode}`;
+            const index = favorites.indexOf(cityKey);
+
+            if (index === -1) {
+                // 添加到收藏
+                favorites.push(cityKey);
+                showToast(`已將 ${cityName} 加入收藏`);
+            } else {
+                // 從收藏中移除
+                favorites.splice(index, 1);
+                showToast(`已將 ${cityName} 移出收藏`);
+            }
+
+            // 保存到本地儲存
+            localStorage.setItem('weatherFavorites', JSON.stringify(favorites));
+
+            // 更新顯示
+            displayWeather(weatherData);
+        }
+
+        // 顯示提示訊息的函數
+        function showToast(message) {
+            // 移除現有的 toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toastHTML = `
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <i class="fas fa-star text-warning me-2"></i>
+                            <strong class="me-auto">收藏通知</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = document.querySelector('.toast');
+            const toast = new bootstrap.Toast(toastElement, {
+                delay: 2000
+            });
+            toast.show();
+        }
+
+        // 添加收藏過濾功能
+        function showFavorites() {
+            const favoriteData = weatherData.filter(city =>
+                favorites.includes(`${city.name},${city.sys.country}`)
+            );
+            currentPage = 1;
+            displayWeather(favoriteData);
+            setupPagination(favoriteData);
+        }
+
+        // 添加過濾按鈕到搜尋區域
+        function addFilterButtons() {
+            const filterButtons = `
+                <div class="btn-group mb-3">
+                    <button class="btn btn-outline-primary" onclick="displayWeather(weatherData)">
+                        <i class="fas fa-globe"></i> 所有城市
+                    </button>
+                    <button class="btn btn-outline-warning" onclick="showFavorites()">
+                        <i class="fas fa-star"></i> 已收藏 (${favorites.length})
+                    </button>
+                </div>
+            `;
+
+            document.querySelector('.search-container').insertAdjacentHTML('beforeend', filterButtons);
+        }
+
+        // 修改顯示函數
+        function displayWeatherWithPagination(data = allWeatherData) {
+            currentDisplayData = data; // 保存當前顯示的資料
+            const tbody = document.getElementById('weatherTbody');
+            tbody.innerHTML = '';
+
+            document.getElementById('resultCount').textContent =
+                `共找到 ${data.length} 個城市`;
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedData = data.slice(start, end);
+
+            paginatedData.forEach((city, index) => {
+                const isFavorite = favorites.includes(`${city.name},${city.sys.country}`);
+                const row = `
+                    <tr class="city-card" onclick="showWeatherDetails(${JSON.stringify(city).replace(/"/g, '&quot;')})">
+                        <td class="text-center">${start + index + 1}</td>
+                        <td>
+                            <button class="btn btn-sm ${isFavorite ? 'btn-warning' : 'btn-outline-warning'} me-2"
+                                    onclick="toggleFavorite(event, '${city.name}', '${city.sys.country}')"
+                                    title="${isFavorite ? '取消收藏' : '加入收藏'}">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            <i class="fas fa-city text-primary me-2"></i>
+                            ${city.name}, ${city.sys.country}
+                        </td>
+                        <td>
+                            <img src="https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png" 
+                                 width="40" class="me-2">
+                            ${city.weather[0].description}
+                        </td>
+                        <td>
+                            <i class="fas fa-temperature-low me-2"></i>
+                            ${Math.round(city.main.temp)}°C
+                        </td>
+                        <td>
+                            <i class="fas fa-tint me-2"></i>
+                            ${city.main.humidity}%
+                        </td>
+                        <td>
+                            <i class="fas fa-wind me-2"></i>
+                            ${Math.round(city.wind.speed)} m/s
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            setupPagination(data);
+            updateFilterButtons(); // 更新過濾按鈕狀態
+        }
+
+        // 更新過濾按鈕
+        function updateFilterButtons() {
+            const filterButtons = document.querySelector('.filter-buttons');
+            if (!filterButtons) {
+                const buttonsHTML = `
+                    <div class="filter-buttons btn-group mb-3">
+                        <button class="btn btn-outline-primary" onclick="showAllCities()">
+                            <i class="fas fa-globe"></i> 所有城市
+                        </button>
+                        <button class="btn btn-outline-warning" onclick="showFavorites()">
+                            <i class="fas fa-star"></i> 已收藏 (${favorites.length})
+                        </button>
+                    </div>
+                `;
+                document.querySelector('.search-container').insertAdjacentHTML('beforeend', buttonsHTML);
+            } else {
+                // 更新收藏數量
+                const favButton = filterButtons.querySelector('.btn-outline-warning');
+                favButton.innerHTML = `<i class="fas fa-star"></i> 已收藏 (${favorites.length})`;
+            }
+        }
+
+        // 顯示所有城市
+        function showAllCities() {
+            currentPage = 1;
+            displayWeatherWithPagination(allWeatherData);
+        }
+
+        // 顯示收藏的城市
+        function showFavorites() {
+            const favoriteData = allWeatherData.filter(city =>
+                favorites.includes(`${city.name},${city.sys.country}`)
+            );
+            currentPage = 1;
+            displayWeatherWithPagination(favoriteData);
+        }
+
+        // 切換收藏狀態
+        function toggleFavorite(event, cityName, countryCode) {
+            event.stopPropagation(); // 防止觸發行的點擊事件
+
+            const cityKey = `${cityName},${countryCode}`;
+            const index = favorites.indexOf(cityKey);
+
+            if (index === -1) {
+                favorites.push(cityKey);
+                showToast(`已將 ${cityName} 加入收藏`);
+            } else {
+                favorites.splice(index, 1);
+                showToast(`已將 ${cityName} 移出收藏`);
+            }
+
+            localStorage.setItem('weatherFavorites', JSON.stringify(favorites));
+            displayWeatherWithPagination(currentDisplayData); // 使用當前顯示的資料重新渲染
+        }
     </script>
 </body>
 
