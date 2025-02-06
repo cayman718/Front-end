@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>縣市查詢</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        /* 簡單的樣式 */
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .pagination {
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            margin: 0 5px;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px;
+            border-radius: 3px;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .search-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .city-card {
+            transition: transform 0.2s;
+        }
+        
+        .city-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .table th {
+            background-color: #e9ecef;
+        }
+        
+        .result-count {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="text-center mb-4">
+                    <i class="fas fa-map-marker-alt text-primary"></i> 縣市查詢系統
+                </h1>
+
+                <div class="search-container">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="輸入任何城市名稱 (例如: London, Tokyo, Paris...)" oninput="searchGlobalWeather()">
+                        <button class="btn btn-outline-secondary" onclick="clearSearch()">
+                            <i class="fas fa-times"></i> 清除
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resultCount" class="result-count"></div>
+
+                <div class="card shadow-sm">
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">編號</th>
+                                    <th>城市</th>
+                                    <th>天氣狀況</th>
+                                    <th>溫度</th>
+                                    <th>濕度</th>
+                                    <th>風速</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weatherTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <nav aria-label="Page navigation">
+                    <div class="pagination justify-content-center" id="pagination"></div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // 定義全域變數
+        const apiKey = '6b832a5bba9eb1ab8d9eb3ae4b1d9011';
+        const weatherData = [];
+        let currentPage = 1;
+        const itemsPerPage = 5;
+
+        const popularCities = [
+            "London,GB", "Paris,FR", "Tokyo,JP", "New York,US",
+            "Sydney,AU", "Beijing,CN", "Moscow,RU", "Dubai,AE",
+            "Singapore,SG", "Seoul,KR", "Toronto,CA", "Mumbai,IN"
+        ];
+
+        // 獲取天氣資料
+        async function fetchWeatherData() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.success === "true") {
+                    weatherData = data.records.location;
+                    console.log('載入縣市數量:', weatherData.length);
+                    searchWeather();
+                }
+            } catch (error) {
+                console.error('獲取天氣資料時發生錯誤:', error);
+            }
+        }
+
+        // 新增搜尋函數
+        async function searchGlobalWeather() {
+            const city = document.getElementById('searchInput').value.trim();
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}&lang=zh_tw`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.cod === 200) {
+                    displayWeather([data]);
+                }
+            } catch (error) {
+                console.error('獲取天氣資料時發生錯誤:', error);
+            }
+        }
+
+        function searchWeather() {
+            const searchValue = document.getElementById('searchInput').value.trim();
+
+            if (!Array.isArray(weatherData)) {
+                console.error('weatherData 不是陣列');
+                return;
+            }
+
+            const filteredData = weatherData.filter(item =>
+                item.locationName.includes(searchValue)
+            );
+
+            currentPage = 1; // 重置頁數
+            displayWeather(filteredData);
+            setupPagination(filteredData);
+        }
+
+        // 修改顯示函數
+        function displayWeather(data) {
+            const tbody = document.getElementById('weatherTbody');
+            tbody.innerHTML = '';
+
+            data.forEach((city, index) => {
+                const row = `
+                    <tr class="city-card">
+                        <td class="text-center">${index + 1}</td>
+                        <td>
+                            <i class="fas fa-city text-primary me-2"></i>
+                            ${city.name}, ${city.sys.country}
+                        </td>
+                        <td>
+                            <img src="https://openweathermap.org/img/wn/${city.weather[0].icon}@2x.png" 
+                                 width="40" class="me-2">
+                            ${city.weather[0].description}
+                        </td>
+                        <td>
+                            <i class="fas fa-temperature-low me-2"></i>
+                            ${Math.round(city.main.temp)}°C
+                        </td>
+                        <td>
+                            <i class="fas fa-tint me-2"></i>
+                            ${city.main.humidity}%
+                        </td>
+                        <td>
+                            <i class="fas fa-wind me-2"></i>
+                            ${Math.round(city.wind.speed)} m/s
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function setupPagination(data) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const pageCount = Math.ceil(data.length / itemsPerPage);
+
+            if (pageCount > 1) {
+                // 上一頁按鈕
+                const prevButton = document.createElement('button');
+                prevButton.className = `btn btn-outline-primary ${currentPage === 1 ? 'disabled' : ''}`;
+                prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevButton.onclick = () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        displayWeather(data);
+                        setupPagination(data);
+                    }
+                };
+                pagination.appendChild(prevButton);
+
+                // 頁碼按鈕
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement('button');
+                    button.className = `btn btn-outline-primary ${currentPage === i ? 'active' : ''}`;
+                    button.innerText = i;
+                    button.onclick = () => {
+                        currentPage = i;
+                        displayWeather(data);
+                        setupPagination(data);
+                    };
+                    pagination.appendChild(button);
+                }
+
+                // 下一頁按鈕
+                const nextButton = document.createElement('button');
+                nextButton.className = `btn btn-outline-primary ${currentPage === pageCount ? 'disabled' : ''}`;
+                nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextButton.onclick = () => {
+                    if (currentPage < pageCount) {
+                        currentPage++;
+                        displayWeather(data);
+                        setupPagination(data);
+                    }
+                };
+                pagination.appendChild(nextButton);
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchWeather();
+        }
+
+        function setupAutocomplete() {
+            const input = document.getElementById('searchInput');
+            const datalist = document.createElement('datalist');
+            datalist.id = 'citySuggestions';
+
+            popularCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                datalist.appendChild(option);
+            });
+
+            input.setAttribute('list', 'citySuggestions');
+            document.body.appendChild(datalist);
+        }
+
+        // 初始化
+        fetchWeatherData();
+        setupAutocomplete();
+    </script>
+</body>
+
+</html>

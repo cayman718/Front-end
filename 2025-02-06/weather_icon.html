@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- link css 順序 1.bs 2.self -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+</head>
+
+<body>
+    <div class="container mt-3">
+        <h2>Hover Rows</h2>
+        <p>
+            The .table-hover class enables a hover state (grey background on mouse over) on table rows:
+        </p>
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th id="time1"></th>
+                    <th id="time2"></th>
+                    <th id="time3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr>
+                    <td>1</td>
+                    <td>新北市</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- js include 順序 1.bs 2.jq 3.self -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function() {
+            let pwd = "CWA-B067A3E9-3407-4DD6-9B5A-3B9C7D3CB1DE";
+
+            // 1.bind
+            const myTable = $("#myTable");
+            const myTbody = myTable.find("tbody");
+            console.log("myTbody", myTbody);
+
+            // 2.action
+
+            let url = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${pwd}`;
+            $.ajax({
+                type: "get",
+                url: url,
+                dataType: "Json",
+                success: function(res) {
+                    console.log("res", res);
+                    let data = res.records.location;
+                    console.log("data", data);
+
+                    // 設置表頭時間
+                    if (data.length > 0) {
+                        const timeData = data[0].weatherElement[2].time;
+
+                        // 取得日期 (2024-03-20T12:00:00+08:00 格式)
+                        let dateStr = timeData[0].startTime
+                            .substr(0, 10)
+                            .replace(/-/g, "/");
+
+                        // 設定每個時段的顯示
+                        for (let i = 0; i < 3; i++) {
+                            let startTime = timeData[i].startTime.substr(11, 5); // 取出 12:00
+                            let endTime = timeData[i].endTime.substr(11, 5); // 取出 18:00
+                            $(`#time${i + 1}`).html(
+                                `${dateStr}<br>${startTime}-${endTime}`
+                            );
+                        }
+                    }
+
+                    $.each(data, function(key, value) {
+                        let tmpLocationName = value.locationName;
+                        let tmpLocationID = key;
+                        let tmpWeatherElement = value.weatherElement;
+
+                        // 取得天氣現象代碼和時間資料
+                        let timeData0 = tmpWeatherElement[0].time[0];
+                        let timeData1 = tmpWeatherElement[0].time[1];
+                        let timeData2 = tmpWeatherElement[0].time[2];
+
+                        let wxCode0 = timeData0.parameter['parameterValue'];
+                        let wxCode1 = timeData1.parameter['parameterValue'];
+                        let wxCode2 = timeData2.parameter['parameterValue'];
+
+                        // 修改判斷白天晚上的函數
+                        function isDaytime(timeData) {
+                            // 檢查是否為夜間時段 (18:00-06:00)
+                            return !timeData.startTime.includes('18:00');
+                        }
+
+                        function getWeatherIconUrl(wxCode, timeData, index) {
+                            // 如果是第二个时段（index 为 1），直接使用晚上的图示
+                            let timePrefix = index === 1 ? 'night' : 'day';
+                            let url = `https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/${timePrefix}/${wxCode}.svg`;
+
+                            // 打印出完整的图示 URL
+                            console.log(`图示 URL: ${url}`);
+
+                            return url;
+                        }
+
+                        // minT & maxT (原有的代碼)
+                        let tmpMinTtime0 =
+                            tmpWeatherElement[2].time[0].parameter["parameterName"];
+                        let tmpMinTtime1 =
+                            tmpWeatherElement[2].time[1].parameter["parameterName"];
+                        let tmpMinTtime2 =
+                            tmpWeatherElement[2].time[2].parameter["parameterName"];
+                        let tmpMaxTtime0 =
+                            tmpWeatherElement[4].time[0].parameter["parameterName"];
+                        let tmpMaxTtime1 =
+                            tmpWeatherElement[4].time[1].parameter["parameterName"];
+                        let tmpMaxTtime2 =
+                            tmpWeatherElement[4].time[2].parameter["parameterName"];
+
+                        // 2.table
+                        let temText = `
+                            <tr>
+                                <td>${tmpLocationID + 1}</td>
+                                <td>${tmpLocationName}</td>
+                                <td>
+                                    <img src="${getWeatherIconUrl(wxCode0, timeData0, 0)}" width="40" onerror="this.src='https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/01.svg'">
+                                    <br>${tmpMinTtime0} - ${tmpMaxTtime0} 度c
+                                </td>
+                                <td>
+                                    <img src="${getWeatherIconUrl(wxCode1, timeData1, 1)}" width="40" onerror="this.src='https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/night/01.svg'">
+                                    <br>${tmpMinTtime1} - ${tmpMaxTtime1} 度c
+                                </td>
+                                <td>
+                                    <img src="${getWeatherIconUrl(wxCode2, timeData2, 2)}" width="40" onerror="this.src='https://www.cwa.gov.tw/V8/assets/img/weather_icons/weathers/svg_icon/day/01.svg'">
+                                    <br>${tmpMinTtime2} - ${tmpMaxTtime2} 度c
+                                </td>
+                            </tr>
+                        `;
+
+                        $(myTbody).append(temText);
+                    });
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>
