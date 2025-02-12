@@ -53,7 +53,7 @@ if (isset($_SESSION['user_id'])) {
 <body class="bg-light">
     <?php include 'includes/nav.php'; ?>
 
-    <div class="container">
+    <div class="container py-4 my-3" style="margin-top: 130px;">
         <div class="form-container bg-white">
             <!-- 表單標題 -->
             <div class="form-header">
@@ -62,9 +62,10 @@ if (isset($_SESSION['user_id'])) {
                 <p class="text-muted">加入我們的會員計畫</p>
             </div>
 
-            <?php if(isset($_SESSION['error'])): ?>
+            <?php if (isset($_SESSION['error'])): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+                <?php echo $_SESSION['error'];
+                    unset($_SESSION['error']); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php endif; ?>

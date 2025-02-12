@@ -22,7 +22,7 @@ if (isset($_SESSION['user_id'])) {
 <body class="bg-light">
     <?php include 'includes/nav.php'; ?>
 
-    <div class="container py-5">
+    <div class="container py-5 my-7" style="margin-top: 130px;">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
                 <div class="card shadow-sm">
@@ -30,19 +30,19 @@ if (isset($_SESSION['user_id'])) {
                         <h2 class="card-title text-center mb-4">會員登入</h2>
 
                         <?php if (isset($_SESSION['error'])): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?php echo $_SESSION['error'];
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?php echo $_SESSION['error'];
                                 unset($_SESSION['error']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         <?php endif; ?>
 
                         <?php if (isset($_SESSION['success'])): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <?php echo $_SESSION['success'];
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <?php echo $_SESSION['success'];
                                 unset($_SESSION['success']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         <?php endif; ?>
 
                         <form method="POST" action="process/login_process.php">
